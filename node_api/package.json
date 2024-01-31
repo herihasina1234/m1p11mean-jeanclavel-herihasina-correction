@@ -1,0 +1,23 @@
+{
+  "name": "node-api",
+  "version": "14.17.3",
+  "description": "premier projet api rest node.",
+  "main": "app.js",
+  "scripts": {
+    "start": "cross-env NODE_ENV=production node app.js",
+    "dev": "cross-env NODE_ENV=development nodemon app.js"
+  },
+  "author": "Rasamimanana Herihasina",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "cross-env": "^7.0.3",
+    "express": "^4.18.1",
+    "mongodb": "^6.3.0",
+    "serve": "^14.0.1",
+    "serve-favicon": "^2.5.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19"
+  }
+}
