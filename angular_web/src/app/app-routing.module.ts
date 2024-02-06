@@ -9,7 +9,7 @@ import { RegisterComponent } from './views/pages/register/register.component';
 
 const routes: Routes = [  
   {
-    path: 'client',
+    path: '',
     component: DefaultLayoutComponent,
     data: {
       title: 'Home'
@@ -87,14 +87,7 @@ const routes: Routes = [
     data: {
       title: 'Login Page'
     }
-  },
-  {
-    path: '',
-    component: LoginComponent,
-    data: {
-      title: 'Bienvenue au salon de beaute'
-    }
-  },
+  },  
   {
     path: 'register',
     component: RegisterComponent,
