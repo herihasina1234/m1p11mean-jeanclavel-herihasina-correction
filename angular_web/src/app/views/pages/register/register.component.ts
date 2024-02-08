@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { User } from 'src/app/models/User';
+import { Component, OnInit } from "@angular/core";
+import { User } from "src/app/models/User";
+import { UserService } from "src/app/services/api/user_service/user.service";
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
+
 export class RegisterComponent implements OnInit{
-  // title = 'Login et inscription';
   
   user = new User;
   pass1: string = '';
@@ -19,12 +19,9 @@ export class RegisterComponent implements OnInit{
   boolemail: boolean = false;
   boolpass: boolean = true;
   
-  constructor(    
-    private userService: UserService, 
-    private route: Router    
-  ) { }
+  constructor(private userService: UserService) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
   }
 
   signup(): void {
