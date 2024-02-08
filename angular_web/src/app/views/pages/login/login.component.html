@@ -9,13 +9,11 @@
                 <h1 class="text-center">Bienvenue</h1>
                 <p class="text-medium-emphasis text-center">Veuiller vous connecter</p>
                 <c-input-group class="mb-3">
-                  <span cInputGroupText>
-                    <svg cIcon name="cilUser"></svg>
-                  </span>
-                  <input autoComplete="username" cFormControl placeholder="nom d'utilisateur..." required="required"
-                  aria-required="true" class="form-control" [(ngModel)]="user.username" [ngModelOptions]="{standalone: true}"
+                  <span cInputGroupText>&#64;</span>
+                <input autoComplete="email" cFormControl placeholder="Email..." required="required"
+                  aria-required="true" class="form-control" [(ngModel)]="user.email" [ngModelOptions]="{standalone: true}"
                   />                
-                  <div *ngIf="boolname" class="alert alert-danger">Veuillez entrer un mot de passe</div>                  
+                  <div *ngIf="boolemail" class="alert alert-danger">Veuillez entrer votre mail</div>                  
                 </c-input-group>
                 <c-input-group class="mb-4">
                   <span cInputGroupText>

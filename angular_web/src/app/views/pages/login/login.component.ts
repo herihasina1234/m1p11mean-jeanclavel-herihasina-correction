@@ -13,7 +13,7 @@ export class LoginComponent implements OnInit{
   // title = 'Login et inscription';
   
   user = new User;
-  boolname: boolean = false;
+  boolemail: boolean = false;
   boolpass: boolean = false;
   boollogin: boolean = false;
 
@@ -26,9 +26,9 @@ export class LoginComponent implements OnInit{
   }
 
   authenticate(): void {
-    if (this.user.username === "") this.boolname = true;
+    if (this.user.email === "") this.boolemail = true;
     if (this.user.password === "") this.boolpass = true;
-    if (!this.boolname && !this.boolpass) this.login();
+    if (!this.boolemail && !this.boolpass) this.login();
   }
 
   login() {   

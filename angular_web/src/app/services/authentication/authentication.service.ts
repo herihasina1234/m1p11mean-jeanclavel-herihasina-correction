@@ -14,7 +14,7 @@ export class AuthenticationService {
 
   login(user: User): Observable<any> {
     const headers = { 'content-type': 'application/json' }
-    const body = { username: user.username, password: user.password };
+    const body = { username: user.email, password: user.password };
     return this.http.post(this.baseURL, body, { headers: new HttpHeaders() })
   }
 }
