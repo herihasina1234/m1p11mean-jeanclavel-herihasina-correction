@@ -18,7 +18,7 @@ export class UserService {
     return this.http.get(`${this.baseUrl}/${id}`);
   }
 
-  create(data: any): Observable<any> {    
+  create(data: any): Observable<any> {        
     return this.http.post(this.baseUrl, data);
   }
 

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const { isEmail } = require('validator');
-const bcrypt = require('bcrypt');
+const conn = require('../database/mongodb')
 
 const userSchema = new mongoose.Schema({
     email: {
@@ -26,7 +26,4 @@ const userSchema = new mongoose.Schema({
     }
 });
 
-
-const User = mongoose.model('user', userSchema);
-
-module.exports = User;
+module.exports = mongoose.model('User', userSchema);
