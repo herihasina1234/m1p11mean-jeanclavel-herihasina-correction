@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { User } from "src/app/models/User";
 import { UserService } from "src/app/services/api/user_service/user.service";
+import { AuthenticationService } from "src/app/services/authentication/authentication.service";
 
 @Component({
   selector: 'app-register',
@@ -19,7 +20,10 @@ export class RegisterComponent implements OnInit{
   boolemail: boolean = false;
   boolpass: boolean = true;
   
-  constructor(private userService: UserService) { }
+  constructor(
+    private userService: UserService,
+    private authenticationService: AuthenticationService
+  ) { }
 
   ngOnInit(): void {
   }
@@ -47,7 +51,9 @@ export class RegisterComponent implements OnInit{
     
     this.userService.create(data)
       .subscribe(
-        (response: any) => console.log(response), 
+        (response: any) => { 
+          this.authenticationService.login(this.user);
+        }, 
         (error: any) => console.log(error)
       )
   };

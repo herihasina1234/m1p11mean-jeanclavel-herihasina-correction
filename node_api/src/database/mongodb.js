@@ -7,17 +7,17 @@ if(process.env.NODE_ENV === 'production'){
     dbURI = 'mongodb+srv://rasamimananaherihasina:mongohery@cluster0.cr4g85i.mongodb.net/?retryWrites=true&w=majority'
     options = {}
 } else{    
-    dbURI = 'mongodb://127.0.0.1:27017/salonDeBeaute';            
-    //options = { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true }    
+    dbURI = 'mongodb://127.0.0.1:27017/salonDeBeaute';                
     options = {}
 }
 
-function getConnection(){
-    mongoose.Promise = global.Promise;
+function getConnection(){    
+    mongoose.connect(dbURI, options)
     return mongoose.createConnection(dbURI, options)        
 }
 
-const conn = mongoose.createConnection(dbURI, options) ;
+const mongoose_created = getConnection();
+const mongoose_connected = mongoose.connect(dbURI, options);
 
-module.exports = getConnection;
-module.exports = conn;
+module.exports = mongoose_created, mongoose_connected;
+
