@@ -35,8 +35,11 @@ export class AuthenticationService {
         this.route.navigate(['/dashboard']);
       },
       err => {
+        console.log(`error in login: ${err.message}`);
+        console.log(err);
+        
         //add parameter to display the error
-        this.route.navigate(['/login']);
+        this.route.navigate(['/login?err']);
       }
     );
   }

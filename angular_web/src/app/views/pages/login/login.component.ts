@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { User } from 'src/app/models/User';
 import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
-import { LocalStorageService } from 'src/app/services/local_storage/local-storage.service';
 
 @Component({
   selector: 'app-login',

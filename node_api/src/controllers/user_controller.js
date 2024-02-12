@@ -3,26 +3,6 @@ const User = require('../models/user')
 const jwt  = require('jsonwebtoken')
 const global_constants = require('../middleware/global_constants')
 
-module.exports.save = async (req, res) => {
-    const salt = await bcrypt.genSalt();    
-    let { email, password, name, firstname } = req.body;
-    
-    //encrypt password
-    bcrypt.hash(password, salt)
-    .then( async hash => {
-        //save user
-        password = hash
-        await User.create({ email, password, name, firstname })
-            .then ( user => {                   
-                const message = "user added successfully"                 
-                res.status(201).json({message: message, data: user});
-            })
-            .catch( error => {
-                return res.status(400).json({message: error.message, data: error})
-            })            
-        })        
-}
-
 module.exports.login = async (req, res) => {
     const { email, password } = req.body
     console.log({ email, password })
@@ -57,3 +37,40 @@ module.exports.login = async (req, res) => {
             res.status(500).json({message, data: error})
         })
 }
+
+module.exports.save = async (req, res) => {
+    const salt = await bcrypt.genSalt();    
+    let { email, password, name, firstname } = req.body;
+    
+    //encrypt password
+    bcrypt.hash(password, salt)
+    .then( async hash => {
+        //save user
+        password = hash
+        await User.create({ email, password, name, firstname })
+            .then ( user => {                   
+                const message = "user added successfully"                 
+                res.status(201).json({message: message, data: user});
+            })
+            .catch( error => {
+                return res.status(400).json({message: error.message, data: error})
+            })            
+        })        
+}
+
+module.exports.find = async (req, res) => {    
+    
+    await User.find()
+        .then ( users => {    
+            const response = {
+                message: "list obtained successfully",
+                data: users                 
+            }
+            res.status(201).json({ response: response });
+        })
+        .catch( error => {
+            return res.status(400).json({message: error.message, data: error})
+        })            
+            
+}
+
