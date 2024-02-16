@@ -14,6 +14,7 @@ import { AppComponent } from './app.component';
 
 // Import containers
 import { DefaultFooterComponent, DefaultHeaderComponent, DefaultLayoutComponent } from './containers';
+import { DataTablesModule } from "angular-datatables";
 
 import {
   AvatarModule,
@@ -49,6 +50,7 @@ const APP_CONTAINERS = [
   declarations: [AppComponent, ...APP_CONTAINERS],
   imports: [
     BrowserModule,
+    DataTablesModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     AvatarModule,
