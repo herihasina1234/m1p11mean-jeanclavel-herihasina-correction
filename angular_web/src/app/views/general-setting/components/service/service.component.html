@@ -1,0 +1,19 @@
+<h1>Liste des services</h1>
+<table datatable class="table">
+    <thead>
+        <tr>
+            <th>Services</th>
+            <th>Prix</th>
+            <th>Duree</th>
+            <th>commission</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let service of serv">
+            <th>{{ service.designation }}</th>
+            <td>{{ service.price }}</td>
+            <td>{{ service.duration }}</td>
+            <td>{{ service.commission }}</td>
+        </tr>
+    </tbody>
+</table>

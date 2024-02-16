@@ -11,6 +11,44 @@ export const navItems: INavData[] = [
     }
   },
   {
+    name: 'Parametrages',
+    url: '/setting',
+    iconComponent: { name: 'cil-setting' },
+    children: [
+      {
+        name: 'Service',
+        url: '/setting/service'
+      },
+      {
+        name: 'gestion Personnel',
+        url: '/setting/employee'
+      }
+    ]
+  },
+  {
+    name: 'Statistiques',
+    url: '/statistique',
+    iconComponent: { name: 'cil-setting' },
+    children: [
+      {
+        name: 'Temps moyen de travail',
+        url: '/statistique/sheudle'
+      },
+      {
+        name: 'Nombre de réservation',
+        url: '/statistique/appointment'
+      },
+      {
+        name: 'Chiffre d\'affaires',
+        url: '/statistique/amount'
+      },
+      {
+        name: 'Bénéfice',
+        url: '/statistique/benefice'
+      }
+    ]
+  },
+  {
     title: true,
     name: 'Theme'
   },

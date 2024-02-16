@@ -69,6 +69,20 @@ const routes: Routes = [
     ]
   },
   {
+    path: 'setting',
+    component: DefaultLayoutComponent,
+    data: {
+      title: 'Home'
+    },
+    children: [
+      {
+        path: '',
+        loadChildren: () =>
+          import('./views/general-setting/general-setting.module').then((m) => m.GeneralSettingModule)
+      }
+    ]
+  },
+  {
     path: '404',
     component: Page404Component,
     data: {
