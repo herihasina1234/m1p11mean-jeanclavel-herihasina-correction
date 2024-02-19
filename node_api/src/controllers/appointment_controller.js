@@ -53,6 +53,82 @@ module.exports.count_appointment_per_day = async(req, res) => {
 
 }
 
+module.exports.count_appointment_per_month = async(req, res) => {
+
+    try {
+        const result = await Appointments.aggregate([{
+            $group: {
+                _id: { $dateToString: { format: "%Y-%m", date: "$startDate" } },
+                count: { $sum: 1 }
+            }
+        }]);
+
+        console.log(result);
+        res.status(200).json({ response: result });
+    } catch (err) {
+        res.status(400).json({ error: err.message });
+    }
+
+}
+
+module.exports.average_time_by_employee = async(req, res) => {
+    try {
+        const averageTimeByEmployee = await calculateAverageTimeByEmployee();
+        const response = {
+            message: "Average time by employee",
+            data: averageTimeByEmployee
+        }
+        res.status(200).json({ response: response });
+    } catch (err) {
+        res.status(400).json({ error: err.message });
+    }
+}
+
+async function calculateAverageTimeByEmployee() {
+    try {
+        const averageTimeByEmployee = await Appointments.aggregate([{
+                $lookup: {
+                    from: "users",
+                    localField: "employee",
+                    foreignField: "_id",
+                    as: "employeeInfo"
+                }
+            },
+            {
+                $unwind: "$employeeInfo"
+            },
+            {
+                $group: {
+                    _id: {
+                        employee_id: "$employee",
+                        name: "$employeeInfo.name",
+                        firstname: "$employeeInfo.firstname"
+                    },
+                    averageTime: {
+                        $avg: {
+                            $divide: [{ $subtract: ["$endDate", "$startDate"] }, 60000] // Conversion en minutes
+                        }
+                    }
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    employee_id: "$_id.employee_id",
+                    name: "$_id.name",
+                    firstname: "$_id.firstname",
+                    averageTime: 1
+                }
+            }
+        ]);
+
+        return averageTimeByEmployee;
+    } catch (error) {
+        throw new Error('Error calculating average time by employee: ' + error.message);
+    }
+}
+
+
 module.exports.delete_appointment = async(req, res) => {
     const { id } = req.params;
 
