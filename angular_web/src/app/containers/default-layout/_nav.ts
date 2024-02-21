@@ -27,12 +27,12 @@ export const navItems: INavData[] = [
   },
   {
     name: 'Statistiques',
-    url: '/statistique',
+    url: '/Temps moyen de travail',
     iconComponent: { name: 'cil-setting' },
     children: [
       {
         name: 'Temps moyen de travail',
-        url: '/statistique/sheudle'
+        url: '/statistic/average-time-employee'
       },
       {
         name: 'Nombre de réservation',

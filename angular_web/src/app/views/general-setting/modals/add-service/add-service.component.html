@@ -1,0 +1,24 @@
+<h1 mat-dialog-title>Add Service</h1>
+<div mat-dialog-content>
+    <form [formGroup]="serviceForm" (ngSubmit)="onSubmit()">
+        <mat-form-field>
+            <input matInput formControlName="designation" placeholder="Designation">
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput formControlName="price" placeholder="Price">
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput formControlName="duration" placeholder="Duration">
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput formControlName="commission" placeholder="Commission">
+        </mat-form-field>
+    </form>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="onSubmit()">Add</button>
+    <button mat-button (click)="closeDialog()">Cancel</button>
+</div>

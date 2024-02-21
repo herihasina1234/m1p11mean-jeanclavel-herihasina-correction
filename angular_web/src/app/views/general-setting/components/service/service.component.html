@@ -16,9 +16,12 @@
             <td>{{ service.duration }}</td>
             <td>{{ service.commission }}</td>
             <td>
+                <mat-icon>delete</mat-icon>
                 <button class="primary">Détail</button>
             </td>
         </tr>
     </tbody>
 </table>
-<div><button class="primary">Ajout</button></div>
+<!-- <div><button class="primary">Ajout</button></div> -->
+<!-- <button mat-raised-button color="primary" onclick="openAddServiceModal()">Add Service</button> -->
+<button mat-raised-button color="primary" (click)="openAddServiceModal()">Add Service</button>

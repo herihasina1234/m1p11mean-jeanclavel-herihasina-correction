@@ -72,7 +72,7 @@ const routes: Routes = [
     path: 'setting',
     component: DefaultLayoutComponent,
     data: {
-      title: 'Home'
+      title: 'Parametrages'
     },
     children: [
       {
@@ -82,6 +82,22 @@ const routes: Routes = [
       }
     ]
   },
+
+  {
+    path: 'statistic',
+    component: DefaultLayoutComponent,
+    data: {
+      title: 'Statistiques'
+    },
+    children: [
+      {
+        path: '',
+        loadChildren: () =>
+          import('./views/statistic/statistic.module').then((m) => m.StatisticModule)
+      }
+    ]
+  },
+
   {
     path: '404',
     component: Page404Component,

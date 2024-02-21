@@ -37,8 +37,9 @@
                             "src/assets"
                         ],
                         "styles": [
-                            "src/scss/styles.scss",
-                            "node_modules/datatables.net-bs4/css/dataTables.bootstrap4.min.css"
+                          "@angular/material/prebuilt-themes/indigo-pink.css",
+                          "src/scss/styles.scss",
+                          "node_modules/datatables.net-bs4/css/dataTables.bootstrap4.min.css"
                         ],
                         "scripts": [
                             "node_modules/jquery/dist/jquery.min.js",
@@ -108,7 +109,8 @@
                             "src/assets"
                         ],
                         "styles": [
-                            "src/scss/styles.scss"
+                          "@angular/material/prebuilt-themes/indigo-pink.css",
+                          "src/scss/styles.scss"
                         ],
                         "scripts": []
                     }
