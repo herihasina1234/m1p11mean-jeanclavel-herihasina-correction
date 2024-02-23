@@ -32,6 +32,24 @@ module.exports.service_list = async(req, res) => {
 
 }
 
+module.exports.get_service_by_id = async(req, res) => {
+    const { id } = req.params;
+    try {
+        const service = await Service.findById(id);
+        const data = {
+            message: "Service by id",
+            data: service
+        }
+        if (!service) {
+            return res.status(404).json({ error: "Service not found" });
+        }
+
+        res.status(200).json({ response: data });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+}
+
 module.exports.delete_service = async(req, res) => {
     const { id } = req.params;
 

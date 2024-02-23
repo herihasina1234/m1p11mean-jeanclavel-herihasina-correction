@@ -1,5 +1,6 @@
 const Appointments = require("../models/Appointments");
 
+
 module.exports.registre_appointment = async(req, res) => {
     const { customer, employee, service, startDate, endDate, createdAt = new Date(), status = "new" } = req.body;
 
@@ -127,6 +128,114 @@ async function calculateAverageTimeByEmployee() {
         throw new Error('Error calculating average time by employee: ' + error.message);
     }
 }
+
+module.exports.revenue_per_day = async(req, res) => {
+    try {
+        const result = await Appointments.aggregate([{
+                $lookup: {
+                    from: "services",
+                    localField: "service",
+                    foreignField: "_id",
+                    as: "serviceInfo"
+                }
+            },
+            {
+                $unwind: "$serviceInfo"
+            },
+            {
+                $group: {
+                    _id: { $dateToString: { format: "%Y-%m-%d", date: "$startDate" } },
+                    totalRevenue: { $sum: "$serviceInfo.price" } // Sum of service prices for the day
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    date: "$_id",
+                    totalRevenue: 1
+                }
+            }
+        ]);
+
+        console.log(result);
+        res.status(200).json({ response: result });
+    } catch (err) {
+        res.status(400).json({ error: err.message });
+    }
+}
+
+// module.exports.revenue_per_month = async(req, res) => {
+//     try {
+//         const result = await Appointments.aggregate([{
+//                 $lookup: {
+//                     from: "services",
+//                     localField: "service",
+//                     foreignField: "_id",
+//                     as: "serviceInfo"
+//                 }
+//             },
+//             {
+//                 $unwind: "$serviceInfo"
+//             },
+//             {
+//                 $group: {
+//                     _id: { $dateToString: { format: "%Y-%m", date: "$startDate" } },
+//                     totalRevenue: { $sum: "$serviceInfo.price" } // Sum of service prices for the day
+//                 }
+//             },
+//             {
+//                 $project: {
+//                     _id: 0,
+//                     date: "$_id",
+//                     totalRevenue: 1
+//                 }
+//             }
+//         ]);
+
+//         console.log(result);
+//         res.status(200).json({ response: result });
+//     } catch (err) {
+//         res.status(400).json({ error: err.message });
+//     }
+// }
+
+module.exports.revenue_per_month = async(req, res) => {
+    try {
+        const result = await Appointments.aggregate([{
+                $lookup: {
+                    from: "services",
+                    localField: "service",
+                    foreignField: "_id",
+                    as: "serviceInfo"
+                }
+            },
+            {
+                $unwind: "$serviceInfo"
+            },
+            {
+                $group: {
+                    _id: { year: { $year: "$startDate" }, month: { $month: "$startDate" } },
+                    totalRevenue: { $sum: "$serviceInfo.price" }
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    year: "$_id.year",
+                    month: "$_id.month",
+                    totalRevenue: 1
+                }
+            }
+        ]);
+
+        console.log(result);
+        res.status(200).json({ response: result });
+    } catch (err) {
+        res.status(400).json({ error: err.message });
+    }
+}
+
+
 
 
 module.exports.delete_appointment = async(req, res) => {

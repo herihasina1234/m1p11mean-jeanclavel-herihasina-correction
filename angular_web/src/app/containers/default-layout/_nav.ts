@@ -13,7 +13,7 @@ export const navItems: INavData[] = [
   {
     name: 'Parametrages',
     url: '/setting',
-    iconComponent: { name: 'cil-setting' },
+    iconComponent: { name: 'cil-puzzle' },
     children: [
       {
         name: 'Service',
@@ -28,7 +28,7 @@ export const navItems: INavData[] = [
   {
     name: 'Statistiques',
     url: '/Temps moyen de travail',
-    iconComponent: { name: 'cil-setting' },
+    iconComponent: { name: 'cil-puzzle' },
     children: [
       {
         name: 'Temps moyen de travail',
@@ -36,7 +36,7 @@ export const navItems: INavData[] = [
       },
       {
         name: 'Nombre de réservation',
-        url: '/statistique/appointment'
+        url: '/statistic/appointment-count'
       },
       {
         name: 'Chiffre d\'affaires',

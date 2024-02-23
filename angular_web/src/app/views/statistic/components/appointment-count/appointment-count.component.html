@@ -1,0 +1,42 @@
+<mat-tab-group>
+    <mat-tab label="Jour">
+        <table datatable class="table" class="table">
+            <thead>
+                <tr>
+                    <th>Services</th>
+                    <th>Prix</th>
+                    <th>Duree</th>
+                    <th>commission</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let countDay of countPerDay">
+                    <th>{{ countDay.date }}</th>
+                    <td>{{ countDay.countReservation }}</td>
+                </tr>
+
+            </tbody>
+        </table>
+    </mat-tab>
+    <mat-tab label="Mois">
+        <h2>Nombre des réservations par Mois</h2>
+        <table datatable class="table" class="table">
+            <thead>
+                <tr>
+                    <th>Mois</th>
+                    <th>Année</th>
+                    <th>Nombre de réservations</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let countMonth of countPerMonth">
+                    <th>{{ countMonth.day }}</th>
+                    <th>{{ countMonth.month }}</th>
+                    <td>{{ countMonth.countReservation }}</td>
+                </tr>
+
+            </tbody>
+        </table>
+    </mat-tab>
+</mat-tab-group>

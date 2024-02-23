@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>Add Service</h1>
+<h1 mat-dialog-title>{{ isUpdate ? 'Update Service' : 'Add Service' }}</h1>
 <div mat-dialog-content>
     <form [formGroup]="serviceForm" (ngSubmit)="onSubmit()">
         <mat-form-field>
@@ -16,9 +16,9 @@
         <mat-form-field>
             <input matInput formControlName="commission" placeholder="Commission">
         </mat-form-field>
+        <div mat-dialog-actions>
+            <button mat-button type="submit">{{ isUpdate ? 'Update' : 'Add' }}</button>
+            <button mat-button (click)="closeDialog()">Cancel</button>
+        </div>
     </form>
-</div>
-<div mat-dialog-actions>
-    <button mat-button (click)="onSubmit()">Add</button>
-    <button mat-button (click)="closeDialog()">Cancel</button>
 </div>

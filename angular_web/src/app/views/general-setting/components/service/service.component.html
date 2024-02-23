@@ -1,5 +1,5 @@
 <h1>Liste des services</h1>
-<table datatable class="table">
+<table datatable [dtOptions]="dtOptions" class="table" class="table">
     <thead>
         <tr>
             <th>Services</th>
@@ -16,12 +16,20 @@
             <td>{{ service.duration }}</td>
             <td>{{ service.commission }}</td>
             <td>
-                <mat-icon>delete</mat-icon>
-                <button class="primary">Détail</button>
+                <button mat-icon-button (click)="deleteService(service._id)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+                <button mat-icon-button (click)="openUpdateModal(service._id)">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button>
+                    <mat-icon>detail</mat-icon>
+                </button>
             </td>
         </tr>
+
     </tbody>
 </table>
 <!-- <div><button class="primary">Ajout</button></div> -->
 <!-- <button mat-raised-button color="primary" onclick="openAddServiceModal()">Add Service</button> -->
-<button mat-raised-button color="primary" (click)="openAddServiceModal()">Add Service</button>
+<button mat-raised-button color="primary" (click)="openServiceModal()">Add Service</button>

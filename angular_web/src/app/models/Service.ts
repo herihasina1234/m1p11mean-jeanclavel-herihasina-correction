@@ -1,12 +1,12 @@
 export class Service {
-    id: string;
+    _id: string;
     designation: string;
     price: number;
     duration: number;
     commission: number;
   
     constructor() {
-      this.id = '';
+      this._id = '';
       this.designation = '';
       this.price = 0;
       this.duration = 0;

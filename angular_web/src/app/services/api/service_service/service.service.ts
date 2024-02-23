@@ -18,7 +18,7 @@ export class ServiceService {
   }
 
   getById(id: any): Observable<any> {
-    return this.http.get(`${this.baseUrl}/${id}`);
+    return this.http.get<Service>(`${this.baseUrl}/${id}`);
   }
 
   create(data: any): Observable<any> {        
