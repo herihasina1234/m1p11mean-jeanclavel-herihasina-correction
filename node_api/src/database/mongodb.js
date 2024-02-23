@@ -3,7 +3,6 @@ const { default: mongoose } = require("mongoose")
 /*BDD_CONFIGURATION=========================================================================================================================================================================================*/
 let dbURI
 let options
-process.env.NODE_ENV = 'dev'
 if (process.env.NODE_ENV === 'production') {
     dbURI = 'mongodb+srv://rasamimananaherihasina:mongohery@cluster0.cr4g85i.mongodb.net/?retryWrites=true&w=majority'
     options = {}
