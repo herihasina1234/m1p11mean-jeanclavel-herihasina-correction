@@ -5,11 +5,12 @@ import { CountAppointmentDay } from '../../../../models/Count_appointment_day';
 import { CountAppointmentMonth } from '../../../../models/Count_appointment_month';
 import { StatService } from '../../../../services/api/stat/stat.service';
 import { MatIconModule } from '@angular/material/icon';
+import { DataTablesModule } from 'angular-datatables';
 
 @Component({
   selector: 'app-appointment-count',
   standalone: true,
-  imports: [CommonModule,MatTabsModule,MatIconModule],
+  imports: [CommonModule,MatTabsModule,MatIconModule, DataTablesModule],
   templateUrl: './appointment-count.component.html',
   styleUrl: './appointment-count.component.scss'
 })
@@ -34,7 +35,8 @@ export class AppointmentCountComponent implements OnInit {
   getCountAppDay(): void {
     this.statService.countAppointmentPerDay().subscribe(
       (response: any) => {
-        this.countPerDay = response.response.data;
+        this.countPerDay = response.response;
+        console.log(this.countPerDay);
       },
       (error) => {
         console.error('Erreur lors de la récupération des données :', error);
@@ -45,7 +47,9 @@ export class AppointmentCountComponent implements OnInit {
   getCountAppMonth(): void {
     this.statService.countAppointmentPerMonth().subscribe(
       (response: any) => {
-        this.countPerMonth = response.response.data;
+        this.countPerMonth = response.response;
+        console.log(this.countPerMonth);
+        
       },
       (error) => {
         console.error('Erreur lors de la récupération des données :', error);

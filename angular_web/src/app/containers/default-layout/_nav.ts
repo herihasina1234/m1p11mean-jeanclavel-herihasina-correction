@@ -40,7 +40,7 @@ export const navItems: INavData[] = [
       },
       {
         name: 'Chiffre d\'affaires',
-        url: '/statistique/amount'
+        url: '/statistic/revenue'
       },
       {
         name: 'Bénéfice',

@@ -27,11 +27,11 @@ mongoose_created
     .on('reconnected', () => {
         console.log(`Connection vers la base de donnees retablie.`)
     })
-    .on('disconnected', () => {
-        if (server)
-            server.close()
-        console.log(`Le server est deconnecte de la base de donnees.`)
-    })
+    // .on('disconnected', () => {
+    //     if (server)
+    //         server.close()
+    //     console.log(`Le server est deconnecte de la base de donnees.`)
+    // })
     .on('error', () => {
         console.log(`Un erreur s'est produit lors de la connection du server vers la base de donnees.`)
     })

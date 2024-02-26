@@ -1,5 +1,5 @@
 export interface CountAppointmentDay {
-    date: Date;
-    countReservation: number;
+    _id: Date;
+    count: number;
   }
   

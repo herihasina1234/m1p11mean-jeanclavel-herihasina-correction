@@ -1,0 +1,21 @@
+<h1>Liste des Employés </h1>
+<table datatable class="table" class="table">
+    <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Prénoms</th>
+        </tr>
+    </thead>
+    <tbody *ngIf="empService && empService.length > 0; else noEmployees">
+        <tr *ngFor="let emp of empService">
+            <td>{{ emp.employee.name }}</td>
+            <td>{{ emp.employee.firstname }}</td>
+        </tr>
+    </tbody>
+    <ng-template #noEmployees>
+        <tr>
+            <td colspan="2">Aucun Employé pour ce service.</td>
+        </tr>
+    </ng-template>
+</table>
+<button mat-raised-button class="btn btn-primary" (click)="openEmpServiceModal()">Ajout Employé</button>

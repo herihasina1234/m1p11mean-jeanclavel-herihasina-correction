@@ -1,48 +1,50 @@
 <mat-tab-group>
     <mat-tab label="Jour">
         <div class="container content">
-            <h2>Nombre des réservations par Mois</h2>
+            <h2>Révenue par Jour</h2>
             <div class="table-content">
                 <table datatable [dtOptions]="dtOptions" class="table" class="table">
                     <thead>
                         <tr>
                             <th>Date</th>
-                            <th>Nombre</th>
+                            <th>Totale révenue</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let countDay of countPerDay">
-                            <th>{{ countDay._id }}</th>
-                            <td>{{ countDay.count }}</td>
+                        <tr *ngFor="let countDay of revenueDay">
+                            <th>{{ countDay.date }}</th>
+                            <td>{{ countDay.totalRevenue }} AR</td>
                         </tr>
 
                     </tbody>
                 </table>
             </div>
-        </div>
 
+        </div>
     </mat-tab>
     <mat-tab label="Mois">
         <div class="container content">
-            <h2>Nombre des réservations par Mois</h2>
+            <h2 class="title">Révenue par Mois</h2>
             <div class="table-content">
                 <table datatable class="table" class="table">
                     <thead>
                         <tr>
                             <th>Mois</th>
-                            <th>Nombre de réservations</th>
+                            <th>Année</th>
+                            <th>Totale révenue</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let countMonth of countPerMonth">
-                            <th>{{ countMonth._id }}</th>
-                            <th>{{ countMonth.count }}</th>
+                        <tr *ngFor="let countMonth of revenueMonth">
+                            <th>{{ countMonth.month}}</th>
+                            <th>{{ countMonth.year}}</th>
+                            <th>{{ countMonth.totalRevenue }} AR</th>
                         </tr>
 
                     </tbody>
                 </table>
             </div>
-        </div>
 
+        </div>
     </mat-tab>
 </mat-tab-group>

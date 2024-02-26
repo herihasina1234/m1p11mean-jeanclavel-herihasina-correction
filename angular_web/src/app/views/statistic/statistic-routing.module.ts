@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AverageTimeEmployeeComponent } from './components/average-time-employee/average-time-employee.component';
 import { AppointmentCountComponent } from './components/appointment-count/appointment-count.component';
+import { RevenueComponent } from './components/revenue/revenue.component';
 
 const routes: Routes = [
   {
@@ -11,6 +12,10 @@ const routes: Routes = [
   {
     path: 'appointment-count',
     component:AppointmentCountComponent
+  },
+  {
+    path: 'revenue',
+    component:RevenueComponent
   }
 ];
 

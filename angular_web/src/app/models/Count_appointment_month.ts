@@ -1,6 +1,5 @@
 export interface CountAppointmentMonth {
-    day: string;
-    month: string;
-    countReservation: number;
+    _id: string;
+    count: string;
   }
   

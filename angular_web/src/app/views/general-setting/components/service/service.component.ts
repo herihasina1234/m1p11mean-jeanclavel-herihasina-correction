@@ -6,18 +6,20 @@ import { DataTablesModule } from 'angular-datatables';
 import { MatDialog } from '@angular/material/dialog';
 import { AddServiceComponent } from '../../modals/add-service/add-service.component';
 import { MatIconModule } from '@angular/material/icon';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 
 
 @Component({
   selector: 'app-service',
   standalone: true,
-  imports: [CommonModule, DataTablesModule, MatIconModule],
+  imports: [CommonModule, DataTablesModule, MatIconModule, RouterLink, RouterLinkActive],
   templateUrl: './service.component.html',
   styleUrl: './service.component.scss'
 })
 export class ServiceComponent {
   serv: Service[] = [];
   dtOptions: DataTables.Settings = {};
+  
 
   constructor(private serviceService: ServiceService, private dialog: MatDialog) {}
 
@@ -41,26 +43,20 @@ export class ServiceComponent {
   }
   openServiceModal(): void {
     const dialogRef = this.dialog.open(AddServiceComponent, {
-      width: '500px' // Passer isUpdate et le service à votre composant de modal
+      width: '500px',
+      height:'400px',
+      // Passer isUpdate et le service à votre composant de modal
     });
     dialogRef.afterClosed().subscribe(() => {
       this.refreshServiceList();
     });
   }
 
-  // openUpdateModal(service: Service): void {
-  //   const dialogRef = this.dialog.open(AddServiceComponent, {
-  //     width: '500px',
-  //     data: { isUpdate: true, service: service } // Passer isUpdate comme true et le service à mettre à jour
-  //   });
-  //   dialogRef.afterClosed().subscribe(() => {
-  //     this.refreshServiceList();
-  //   });
-  // }
 
   openUpdateModal(serviceId: string): void {
     const dialogRef = this.dialog.open(AddServiceComponent, {
         width: '500px',
+        height:'400px',
         data: { isUpdate: true, serviceId: serviceId }
     });
 
@@ -92,7 +88,7 @@ export class ServiceComponent {
     this.serviceService.update(serviceId, newData).subscribe(
       () => {
         console.log('Service mis à jour avec succès.');
-        // Vous pouvez ajouter ici des actions supplémentaires après la mise à jour
+        this.refreshServiceList();
       },
       (error) => {
         console.error('Erreur lors de la mise à jour du service :', error);
