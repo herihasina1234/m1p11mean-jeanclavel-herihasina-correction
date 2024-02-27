@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Employeeservice } from '../../../../../models/Employee_service';
@@ -9,7 +9,7 @@ import { ServiceService } from 'src/app/services/api/service_service/service.ser
 import { UserService } from '../../../../../services/api/user_service/user.service';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatDialogRef } from '@angular/material/dialog'; 
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog'; 
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 
@@ -32,7 +32,8 @@ export class AddEmpServiceComponent implements OnInit {
     private formBuilder: FormBuilder,
     private employeeService: EmployeeServiceService,
     private serviceService: ServiceService,
-    private userService: UserService
+    private userService: UserService,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.empForm = this.formBuilder.group({
       employee: ['', Validators.required],
@@ -40,6 +41,8 @@ export class AddEmpServiceComponent implements OnInit {
   }
 
   async ngOnInit() {
+    console.log("ito ilay data: ",this.data);
+    
     this.serviceService.getAll().subscribe(
       (response: any) => {
         this.listService = response.response.data;
@@ -53,7 +56,7 @@ export class AddEmpServiceComponent implements OnInit {
     this.userService.getAll().subscribe(
       (response: any) => {
         this.ListEmp = response.response.data;
-        console.log("services: ", this.ListEmp);
+        console.log("listEmpppppppppppppppppp: ", this.ListEmp);
       },
       (error) => {
         console.error('Erreur lors de la récupération des services :', error);
@@ -64,22 +67,17 @@ export class AddEmpServiceComponent implements OnInit {
   async onSubmit() {
     if (this.empForm.valid) {
         const formData = this.empForm.value;
-        console.log(formData);
-        
         const empServiceData: Employeeservice = {
             _id : '',
-            employee: formData.employee._id,
-            service: formData.service._id,
+            employee: formData.employee,
+            service: this.data.oneService._id
         };
-
-        
         await this.createEmpService(empServiceData);
         
     }
   }
   async createEmpService(empServiceData: Employeeservice) {
     try {
-        console.log("apppp: ", empServiceData);
         const createdEmpService = await this.employeeService.create(empServiceData).toPromise();
         this.empServiceAdded.emit(createdEmpService);
         this.empForm.reset();

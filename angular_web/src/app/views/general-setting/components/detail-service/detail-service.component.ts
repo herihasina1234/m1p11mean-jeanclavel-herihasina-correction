@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { Service } from 'src/app/models/Service';
 import { EmployeeServiceService } from '../../../../services/api/employee_service_service/employee-service.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { UserService } from 'src/app/services/api/user_service/user.service';
 import { ServiceService } from 'src/app/services/api/service_service/service.service';
 import { AddEmpServiceComponent } from '../../modals/emp-service/add-emp-service/add-emp-service.component';
@@ -23,7 +23,10 @@ export class DetailServiceComponent implements OnInit {
   listServ: Service[] = [];
   listEmp: User[] = [];
 
-  constructor(private route: ActivatedRoute,private service:ServiceService, private emplServ: EmployeeServiceService,private dialog: MatDialog) { }
+  constructor(private route: ActivatedRoute,
+    private service:ServiceService,
+    private emplServ: EmployeeServiceService,
+    private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.serviceId = this.route.snapshot.paramMap.get('id');
@@ -55,6 +58,7 @@ export class DetailServiceComponent implements OnInit {
     const dialogRef = this.dialog.open(AddEmpServiceComponent, {
       width: '500px',
       height:'400px',
+      data: { oneService: this.oneService }
       // Passer isUpdate et le service à votre composant de modal
     });
     dialogRef.afterClosed().subscribe(() => {
