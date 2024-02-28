@@ -1,0 +1,23 @@
+<h1>Liste des Employés </h1>
+<table datatable class="table" class="table">
+    <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Prénoms</th>
+            <th>Email</th>
+        </tr>
+    </thead>
+    <tbody *ngIf="ListEmp.length > 0; else noEmployees">
+        <tr *ngFor="let emp of ListEmp">
+            <td>{{ emp.name }}</td>
+            <td>{{ emp.firstname }}</td>
+            <td>{{ emp.email }}</td>
+        </tr>
+    </tbody>
+    <ng-template #noEmployees>
+        <tr>
+            <td colspan="3">Aucun Employé </td>
+        </tr>
+    </ng-template>
+</table>
+<button mat-raised-button class="btn btn-primary" (click)="openEmpModal()">Ajout Employé</button>

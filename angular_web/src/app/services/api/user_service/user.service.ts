@@ -47,4 +47,18 @@ export class UserService {
   findByTitle(title: any): Observable<User[]> {
     return this.http.get<User[]>(`${this.baseUrl}?title=${title}`);
   }
+
+  findByRole(role: any): Observable<User[]> {
+    const token = localStorage.getItem('token');
+    if (token) {
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Authorization': 'Bearer ' + token
+        })
+      };
+      return this.http.get<User[]>(`${this.baseUrl}/findByRole/${role}`, httpOptions);
+    } else {
+      return this.http.get<User[]>(this.baseUrl);
+    }
+  }
 }
