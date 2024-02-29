@@ -1,0 +1,17 @@
+<div class="container body">
+    <h2 mat-dialog-title>Ajout Employé</h2>
+    <div class="dialog-content" mat-dialog-content>
+        <form [formGroup]="empForm" (ngSubmit)="onSubmit()">
+            <mat-form-field>
+                <mat-label>Designation</mat-label>
+                <mat-select formControlName="employee" placeholder="Sélectionner un employé">
+                    <mat-option *ngFor="let employee of ListEmp" [value]="employee._id">{{ employee.name }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <div mat-dialog-actions class="btn-action">
+                <button class="btn btn-primary btn-content" mat-button type="submit">Ajouter</button>
+                <button class="btn btn-danger btn-content" mat-button (click)="closeDialog()">Annuler</button>
+            </div>
+        </form>
+    </div>
+</div>

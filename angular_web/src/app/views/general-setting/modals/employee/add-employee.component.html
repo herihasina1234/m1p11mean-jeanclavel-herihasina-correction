@@ -1,0 +1,32 @@
+<div class=" container body">
+    <h3 mat-dialog-title>Ajout Employé </h3>
+    <div class="dialog-content" mat-dialog-content>
+        <form [formGroup]="serviceForm" (ngSubmit)="onSubmit()">
+            <mat-form-field>
+                <mat-label>Nom</mat-label>
+                <input matInput formControlName="name" placeholder="ex: Rakoto" id="name">
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Prénoms</mat-label>
+                <input matInput formControlName="firstName" placeholder="Prénoms" id="firstName">
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Email</mat-label>
+                <input matInput type="email" formControlName="email" placeholder="Mail" id="email">
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Password</mat-label>
+                <input matInput type="password" formControlName="password" id="password">
+            </mat-form-field>
+
+
+            <div mat-dialog-actions class="btn-action">
+                <button class="btn btn-primary btn-content" mat-button type="submit">Ajouter</button>
+                <button class="btn btn-danger btn-content" mat-button (click)="closeDialog()">Annuler</button>
+            </div>
+        </form>
+    </div>
+</div>

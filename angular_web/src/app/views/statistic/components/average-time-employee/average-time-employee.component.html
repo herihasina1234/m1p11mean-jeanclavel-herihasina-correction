@@ -1,0 +1,20 @@
+<h3>Moyenne du temps de travail par employé</h3>
+<table datatable class="table table-bordered table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Prénoms</th>
+            <th>Temps moyennes</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let avg of avg">
+            <th>{{ avg.firstname }}</th>
+            <td>{{ avg.name }}</td>
+            <td>{{ avg.averageTime }} minutes</td>
+            <td>
+                <button class="primary">Détail</button>
+            </td>
+        </tr>
+    </tbody>
+</table>

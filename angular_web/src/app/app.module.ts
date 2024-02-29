@@ -3,6 +3,7 @@ import { HashLocationStrategy, LocationStrategy, PathLocationStrategy } from '@a
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { NgScrollbarModule } from 'ngx-scrollbar';
 
@@ -15,6 +16,7 @@ import { AppComponent } from './app.component';
 // Import containers
 import { DefaultFooterComponent, DefaultHeaderComponent, DefaultLayoutComponent } from './containers';
 import { DataTablesModule } from "angular-datatables";
+
 
 import {
   AvatarModule,
@@ -39,6 +41,8 @@ import {
 
 import { IconModule, IconSetService } from '@coreui/icons-angular';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { AddServiceComponent } from './views/general-setting/modals/add-service/add-service.component';
+import { GeneralSettingModule } from './views/general-setting/general-setting.module';
 
 const APP_CONTAINERS = [
   DefaultFooterComponent,
@@ -49,7 +53,9 @@ const APP_CONTAINERS = [
 @NgModule({
   declarations: [AppComponent, ...APP_CONTAINERS],
   imports: [
+    GeneralSettingModule,
     BrowserModule,
+    MatDialogModule,
     DataTablesModule,
     BrowserAnimationsModule,
     AppRoutingModule,

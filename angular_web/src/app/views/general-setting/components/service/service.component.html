@@ -1,11 +1,12 @@
 <h1>Liste des services</h1>
-<table datatable class="table">
+<table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-bordered table-striped table-hover">
     <thead>
         <tr>
             <th>Services</th>
             <th>Prix</th>
             <th>Duree</th>
             <th>commission</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -14,6 +15,22 @@
             <td>{{ service.price }}</td>
             <td>{{ service.duration }}</td>
             <td>{{ service.commission }}</td>
+            <td>
+                <button class="btn-action" mat-icon-button (click)="deleteService(service._id)">
+                    <mat-icon color="red">delete</mat-icon>
+                </button>
+                <button class="btn-action" mat-icon-button (click)="openUpdateModal(service._id)">
+                    <mat-icon color="green">edit</mat-icon>
+                </button>
+                <button class="btn-action" mat-icon-button [routerLink]="['/setting/service/detail', service._id]" routerLinkActive="active" ariaCurrentWhenActive="page">
+                    <mat-icon color="blue">info</mat-icon>
+                </button>
+
+            </td>
         </tr>
+
     </tbody>
 </table>
+<!-- <div><button class="primary">Ajout</button></div> -->
+<!-- <button mat-raised-button color="primary" onclick="openAddServiceModal()">Add Service</button> -->
+<button mat-raised-button class="btn btn-primary" (click)="openServiceModal()">Add Service</button>

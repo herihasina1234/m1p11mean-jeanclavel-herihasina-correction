@@ -13,7 +13,7 @@ const appointmentSchema = new Schema({
     },
     service: {
         type: Schema.Types.ObjectId,
-        ref: 'Service',
+        ref: 'service',
         required: [true, 'Please enter a service'],
     },
     startDate: {

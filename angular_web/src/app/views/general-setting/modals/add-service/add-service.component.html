@@ -1,0 +1,34 @@
+<div class=" container body">
+    <h3 mat-dialog-title>{{ isUpdate ? 'Modifier Service' : 'Ajout Service' }}</h3>
+    <div class="dialog-content" mat-dialog-content>
+        <form [formGroup]="serviceForm" (ngSubmit)="onSubmit()">
+            <!-- Champ masqué pour _id -->
+            <input type="hidden" formControlName="_id">
+
+            <mat-form-field>
+                <label for="designation">Designation</label>
+                <input class="input" matInput formControlName="designation" placeholder="ex: maquillage" id="designation">
+            </mat-form-field>
+
+            <mat-form-field>
+                <label for="price">Prix</label>
+                <input class="input" matInput formControlName="price" placeholder="Price" id="price">
+            </mat-form-field>
+
+            <mat-form-field>
+                <label for="duration">Durée</label>
+                <input class="input" matInput formControlName="duration" placeholder="Duration" id="duration">
+            </mat-form-field>
+
+            <mat-form-field>
+                <label for="commission">Commission</label>
+                <input class="input" matInput formControlName="commission" placeholder="Commission" id="commission">
+            </mat-form-field>
+            <div mat-dialog-actions class="btn-action">
+                <button class="btn btn-primary btn-content" mat-button type="submit">{{ isUpdate ? 'Modifier' : 'Ajouter' }}</button>
+                <button class="btn btn-danger btn-content" mat-button (click)="closeDialog()">Annuler</button>
+            </div>
+        </form>
+
+    </div>
+</div>

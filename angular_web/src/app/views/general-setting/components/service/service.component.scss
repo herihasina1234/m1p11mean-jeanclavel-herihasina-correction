@@ -1,0 +1,9 @@
+::ng-deep .table .mat-icon-button {
+    border: none;
+    /* Supprime le bord des boutons d'action */
+}
+
+.btn-action {
+    border: none;
+    margin: 5px;
+}

@@ -1,0 +1,71 @@
+/* Style pour le titre */
+
+.mat-dialog-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+
+/* Style pour le contenu du formulaire */
+
+.mat-dialog-content {
+    padding: 20px;
+}
+
+
+/* Style pour les champs de formulaire */
+
+.mat-form-field {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+
+/* Style pour les boutons d'action */
+
+.mat-dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+
+/* Style pour le bouton "Add" */
+
+.mat-dialog-actions button:first-child {
+    background-color: #4caf50;
+    /* Couleur de fond */
+    color: white;
+    /* Couleur du texte */
+    margin-right: 10px;
+    /* Marge à droite */
+}
+
+
+/* Style pour le bouton "Cancel" */
+
+.mat-dialog-actions button:last-child {
+    background-color: #f44336;
+    /* Couleur de fond */
+    color: white;
+    /* Couleur du texte */
+}
+
+.btn-action {
+    margin: 10px;
+}
+
+.btn-content {
+    margin: 10px;
+}
+
+.dialog-content {
+    margin-top: 20px;
+}
+
+.input {
+    border-radius: 5px;
+    margin-right: 5px;
+    margin-top: 5px;
+}

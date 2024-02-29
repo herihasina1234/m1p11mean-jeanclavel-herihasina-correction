@@ -1,0 +1,135 @@
+<c-card>
+    <c-card-body>
+        <h1 cCardTitle>Listes des rendez-vous</h1>
+        
+        <c-accordion>
+            <c-accordion-item #searchAccordion="cAccordionItem" [visible]="accordionIsVisible">
+                <ng-template cTemplateId="accordionHeaderTemplate">
+                    <button (click)="toggleAccordion(searchAccordion)" [collapsed]="!searchAccordion.visible" cAccordionButton>
+                        Recherche avanc&eacute;e
+                    </button>
+                </ng-template>
+                <ng-template cTemplateId="accordionBodyTemplate">
+                    <div class="accordion-body">
+                        <div class="row">
+                            <div class="col">
+                                <c-form-check>
+                                    <input cFormCheckInput id="checkOne" type="checkbox" [(ngModel)]="checkPayment"/>
+                                    <label cFormCheckLabel for="checkOne">activer</label>
+                                </c-form-check>                            
+                            </div>
+                            
+                            <div class="col">
+                                <div class="form-check form-switch ml-3">
+                                    <input class="form-check-input" type="checkbox" id="option1" [(ngModel)]="paymentStatus" [disabled]="!checkPayment">
+                                    <label class="form-check-label" for="option1">Pay&eacute;</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col">
+                                <c-form-check>
+                                    <input cFormCheckInput id="checkOne" type="checkbox" [(ngModel)]="checkStatus"/>
+                                    <label cFormCheckLabel for="checkOne">activer</label>
+                                </c-form-check>                            
+                            </div>
+                            
+                            <div class="col">
+                                <div class="form-check form-switch ml-2">
+                                    <input class="form-check-input" type="checkbox" id="option2" [(ngModel)]="status" [disabled]="!checkStatus" checked>
+                                    <label class="form-check-label" for="option2">&eacute;ffectu&eacute;</label>
+                                </div>                                
+                            </div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <input #keyword type="text" class="form-control" placeholder="Entrer un mot ...">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button" color="secondary" (click)="onSearch(keyword.value)">Rechercher</button>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </c-accordion-item>
+        </c-accordion>
+    </c-card-body>
+    <c-card-body>
+        <ng-container *ngIf="appointments$ | async as appointments">
+            <ng-container *ngIf="appointments.length > 0; else emptyList">
+                                                       
+                <div class="table-responsive">
+                    <table class="table table-striped mlr-10">
+                        <thead class="thead -primary">
+                            <tr>
+                                <th th scope="col">designation</th>
+                                <th th scope="col">duree (en mn)</th>
+                                <th th scope="col">prix (en Ar)</th>
+                                <th th scope="col">employe</th>
+                                <th th scope="col">Date et heure debut</th>
+                                <th th scope="col">Date et heure fin</th>
+                                <th th scope="col">Status</th>
+                                <th th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let appointment of appointments; let i = index" >
+                                <td>{{ appointment.service?.designation }}</td>
+                                <td>{{ appointment.service?.duree }}</td>
+                                <td>{{ appointment.service?.prix }}</td>
+                                <td>{{ appointment.employee?.name }} {{ appointment.employee?.firstname }}</td>
+                                <td>{{ appointment.startDate | date:'dd/MM/yyyy HH:mm:ss' }}</td>
+                                <td>{{ appointment.endDate | date:'dd/MM/yyyy HH:mm:ss' }}</td>      
+                                <td *ngIf="appointment.status; nonEffectue">effectu&eacute;</td>            
+                                <td #nonEffectue>Pas effectu&eacute;</td>            
+                                <td>
+                                    <button [cModalToggle]="staticBackdropModal.id" *ngIf="!appointment.paymentStatus" cButton>payer</button>
+        
+                                    <c-modal #staticBackdropModal backdrop="static" id="staticBackdropModal">
+                                    <c-modal-header>
+                                        <h3 cModalTitle class="text-center">Veuiller valider le payment du rendez-vous</h3>
+                                        <button [cModalToggle]="staticBackdropModal.id" cButtonClose></button>
+                                    </c-modal-header>
+                                    <c-modal-body>                                                                   
+                                        <ul cListGroup>
+                                            <li cListGroupItem><strong>Designation: </strong>{{ appointment.service?.designation }}</li>
+                                            <li cListGroupItem><strong>Duree: </strong>{{ appointment.service?.duree }} mn</li>
+                                            <li cListGroupItem><strong>Debut: </strong>{{ appointment.startDate | date:'dd/MM/yyyy HH:mm:ss' }}</li>
+                                            <li cListGroupItem><strong>Fin: </strong>{{ appointment.endDate | date:'dd/MM/yyyy HH:mm:ss' }}</li>
+                                            <li cListGroupItem><strong>Employe: </strong>{{ appointment.employee?.name }} {{ appointment.employee?.firstname }}</li>                  
+                                            <li cListGroupItem><strong>Prix: </strong>{{ appointment.service?.prix }} Ar</li>                  
+                                        </ul>                                                                    
+                                    </c-modal-body>
+                                    <c-modal-footer>
+                                        <button [cModalToggle]="staticBackdropModal.id" cButton color="secondary">
+                                        Annuler
+                                        </button>
+                                        <button cButton color="primary" (click)="payer(appointment)" *ngIf="!loading">Payer</button>
+                                        <button cButton color="secondary" *ngIf="loading" disabled>
+                                            <c-spinner aria-hidden="true" size="sm" variant="grow"></c-spinner>
+                                            Loading...
+                                        </button>
+                                    </c-modal-footer>
+                                    </c-modal>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>  
+                <ng-container *ngIf="totalPages$ | async as totalPages">
+                    <app-pagination *ngIf="paginationTable$ | async as paginationTable"
+                        [currentPage]="currentPage" 
+                        [totalPages]="totalPages" 
+                        [paginationTable]="paginationTable"
+                        (pageChange)="onPageChange($event)"
+                    >
+                    </app-pagination>                
+                </ng-container>              
+                                          
+            </ng-container>      
+        </ng-container>
+      <ng-template #emptyList>
+        Pas encore de rendez-vous pour le moment.
+      </ng-template>
+    </c-card-body>
+</c-card>

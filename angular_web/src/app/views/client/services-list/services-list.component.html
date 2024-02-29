@@ -1,0 +1,50 @@
+<c-card>
+  <c-card-body class="bg-light min-vh-100">
+    
+    <h1 cCardTitle>Listes des Services</h1>   
+    <div class="bg-light min-vh-100">
+      
+      <c-row class="justify-content-center">
+          <c-col md="12">
+              <c-card-group class="grid-container" *ngIf="services$ | async as services">
+                <ng-container *ngIf="services.length > 0; else emptyList">
+                  <c-card class="m-1 w-10 grid-item" *ngFor="let service of services">
+                    <img cCardImg="top" src="./assets/img/services/{{ service.img }}.jpg">
+                    <c-card-body>
+                      <h3 cCardTitle>{{ service.designation }}</h3>
+                      <p cCardText>
+                        {{ service.description }}
+                      </p>
+                    </c-card-body>
+                    <!-- <ul cListGroup [flush]="true"> -->
+                    <ul cListGroup>
+                      <li cListGroupItem>Duree: {{ service.duree }} mn</li>
+                      <li cListGroupItem>Prix: {{ service.prix }} Ar</li>                  
+                    </ul>
+                    <c-card-body>
+                        <button cButton color="primary" (click)="addServiceToCart(service)">Prendre rendez-vous</button>
+                    </c-card-body>
+                  </c-card>
+
+                </ng-container>  
+              </c-card-group>
+          </c-col>
+      </c-row>
+         
+      <c-row class="justify-content-left">
+        <ng-container *ngIf="totalPages$ | async as totalPages">
+          <app-pagination *ngIf="paginationTable$ | async as paginationTable"
+              [currentPage]="currentPage" 
+              [totalPages]="totalPages" 
+              [paginationTable]="paginationTable"
+              (pageChange)="onPageChange($event)"
+          >
+          </app-pagination>                
+        </ng-container>     
+      </c-row>
+    </div>
+    <ng-template #emptyList>
+      Pas encore de rendez-vous pour le moment.
+    </ng-template>
+  </c-card-body>
+</c-card>

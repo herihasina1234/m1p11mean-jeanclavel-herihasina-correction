@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 const { isEmail } = require('validator');
 
 const userSchema = new mongoose.Schema({
@@ -22,7 +23,11 @@ const userSchema = new mongoose.Schema({
     firstname: {
         type: String,
         length: [100, 'length max is 100 characters'],
-    }
+    },
+    role: {
+        type: Schema.Types.ObjectId,
+        ref: 'Role',
+    },
 });
 
 module.exports = mongoose.model('User', userSchema);
