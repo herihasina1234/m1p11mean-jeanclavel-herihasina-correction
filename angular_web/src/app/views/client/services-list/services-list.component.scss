@@ -1,0 +1,11 @@
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 5 columns with equal width */
+    grid-template-rows: auto auto; /* 2 rows with automatic height */
+    gap: 10px; /* gap between grid items */
+  }
+  
+  .grid-item {
+    padding: 20px;
+    border: 1px solid #ccc;
+  }

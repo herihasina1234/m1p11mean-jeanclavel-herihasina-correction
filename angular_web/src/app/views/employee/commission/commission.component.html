@@ -1,0 +1,60 @@
+<c-card>
+    <c-card-body>
+        <h1 cCardTitle>Details commission</h1>
+        <form>
+            <input                
+            #dateTime                                               
+            type="datetime-local" 
+            />  
+            <button cButton color="success" (click)="getCommission(dateTime.value)">
+                valider
+            </button> 
+        </form>
+    </c-card-body>
+    <c-card-body>
+        <ng-container *ngIf="appointments$ | async as appointments">
+            <ng-container *ngIf="appointments.length > 0; else emptyList">
+                                                       
+                <div class="table-responsive">
+                    <table class="table table-striped mlr-10">
+                        <thead class="thead -primary">
+                            <tr>
+                                <th th scope="col">designation</th>
+                                <th th scope="col">duree (en mn)</th>
+                                <th th scope="col">prix (en Ar)</th>
+                                <th th scope="col">commission (%)</th>
+                                <th th scope="col">client</th>
+                                <th th scope="col">Date et heure debut</th>
+                                <th th scope="col">Date et heure fin</th>
+                                <th th scope="col">Status</th>
+                                <th th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let appointment of appointments; let i = index" >
+                                <td>{{ appointment.service?.designation }}</td>
+                                <td>{{ appointment.service?.duree }}</td>
+                                <td>{{ appointment.service?.prix }}</td>
+                                <td>{{ appointment.service?.commission }}</td>
+                                <td>{{ appointment.customer?.name }} {{ appointment.customer?.firstname }}</td>
+                                <td>{{ appointment.startDate | date:'dd/MM/yyyy HH:mm:ss' }}</td>
+                                <td>{{ appointment.endDate | date:'dd/MM/yyyy HH:mm:ss' }}</td>      
+                                <td *ngIf="!appointment.status; nonEffectue">
+                                    Effectu&eacute;        
+                                </td>
+                                <td #nonEffectue>
+                                    non Effectu&eacute;        
+                                </td>
+                                <td *ngIf="appointment.paymentStatus; nonPaye">Pay&eacute;</td>            
+                                <td #nonPaye>Pas encore Pay&eacute;</td>            
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>                                                               
+            </ng-container>      
+        </ng-container>
+      <ng-template #emptyList>
+        entrer une date pour voir la liste journaliere.
+      </ng-template>
+    </c-card-body>
+</c-card>

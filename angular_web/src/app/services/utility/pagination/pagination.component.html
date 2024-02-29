@@ -1,0 +1,16 @@
+<nav *ngIf="totalPages > 1">
+    <c-pagination aria-label="Page navigation example">
+        <li cPageItem [class.disabled]="currentPage === 1">
+          <a cPageLink (click)="onPrevious()">précédent</a>
+        </li>        
+        <li 
+            cPageItem 
+            *ngFor="let p of paginationTable"
+        >
+          <a cPageLink (click)="onPageChange(p)" [ngClass]="{ 'active': isActivePage(p) }">{{ p }}</a>
+        </li>     
+        <li cPageItem [ngClass]="{ 'disabled': isLastPage() }">
+          <a cPageLink (click)="onNext()">suivant</a>
+        </li>
+      </c-pagination>     
+</nav>

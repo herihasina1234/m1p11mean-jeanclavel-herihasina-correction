@@ -1,0 +1,105 @@
+<c-card>
+  <c-card-body>
+    <h1 cCardTitle>Prise des rendez-vous</h1>
+    <c-alert 
+      [(visible)]="alertSuccess"
+      [dismissible]="true"
+      color="success"
+      fade
+      *ngIf="alertSuccess"
+      class="success">
+      Vos rendez-vous ont ete enregistre.
+    </c-alert> 
+    <c-alert 
+      [(visible)]="alertError"
+      [dismissible]="true"
+      color="danger"
+      fade
+      *ngIf="alertError"
+      class="danger">
+      Un erreur est survenu, veuiller verifier vos entrees.
+    </c-alert> 
+    <ng-container *ngIf="cartAppointments$ | async as appointments">
+      <ng-container *ngIf="appointments.length > 0; else emptyList">
+        <div class="table-responsive">
+          <table cdkDropListGroup class="table table-striped mlr-10">
+            <thead class="thead -primary">
+              <tr>
+                <th th scope="col">designation</th>
+                <th th scope="col">duree (en mn)</th>
+                <th th scope="col">prix (en Ar)</th>
+                <th th scope="col">employe</th>
+                <th th scope="col">Date et heure debut</th>
+                <th th scope="col">Date et heure fin</th>
+                <th th scope="col">Modifier Date Debut</th>
+                <th th scope="col"></th>
+                <th th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody 
+            cdkDropList 
+            [cdkDropListData]="appointments"
+            (cdkDropListDropped)="drop($event)"
+            >
+              <tr *ngFor="let appointment of appointments; let i = index" cdkDrag>
+                <td>{{ appointment.service?.designation }}</td>
+                <td>{{ appointment.service?.duree }}</td>
+                <td>{{ appointment.service?.prix }}</td>
+                <td>
+                  <select #selectElem (change)="onSelect(selectElem.selectedIndex, i)" cSelect>
+                    <option value="" disabled selected>Choisir un employee</option>
+                    <option *ngFor="let employe of employes; let j = index" [value]="i">{{ employe.name }}  {{ employe.firstname }}</option>
+                  </select>
+                </td>
+                <td>{{ appointment.startDate | date:'dd/MM/yyyy HH:mm:ss' }}</td>
+                <td>{{ appointment.endDate | date:'dd/MM/yyyy HH:mm:ss' }}</td>
+                <td>                  
+                    <input                
+                    #dateTime                                               
+                    type="datetime-local" 
+                    />                                                        
+                </td>
+                <td> 
+                  <button cButton color="success" (click)="updateDate(dateTime.value, i)">
+                    <svg cIcon name="cil-check-alt" class="sm"></svg>
+                  </button>  
+                </td>
+                <td>
+                  <button color="secondary" (click)="removeProductFromCart(i)" cButton>
+                    <svg cIcon name="cil-trash" class="sm"></svg>
+                  </button>                
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+          <ul>
+            <li *ngIf="durationTotal$ | async as durationTotal"><strong>Duree Total:</strong> {{ durationTotal }} mn</li>
+            <li *ngIf="priceTotal$ | async as priceTotal"><strong>Prix Total:</strong> {{ priceTotal }} Ar</li>
+          </ul>
+        </div>
+        
+        
+        <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+          <button cButton color="success" class="me-md-2" (click)="calculate()">Calculer</button>
+          <button  class="btn btn-primary" *ngIf="loading">
+            <c-spinner aria-hidden="true" size="sm" variant="grow"></c-spinner>
+            Loading...      
+          </button>        
+          <button  class="btn btn-primary" (click)="validateRv()" *ngIf="!loading">
+            Valider le rendez-vous
+          </button>
+        </div>
+
+      </ng-container>
+    </ng-container>  
+    
+
+    <ng-template #emptyList>
+    Il n'y a pas de rendez-vous pour le moment, pensez à consulter nos services. 
+    </ng-template>
+  </c-card-body>
+</c-card>
