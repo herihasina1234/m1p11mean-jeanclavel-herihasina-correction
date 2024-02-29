@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddServiceComponent } from '../../modals/add-service/add-service.component';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Subject } from 'rxjs';
 
 
 @Component({
@@ -19,6 +20,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 export class ServiceComponent {
   serv: Service[] = [];
   dtOptions: DataTables.Settings = {};
+  dtTrigger: Subject<any> = new Subject<any>();
   
 
   constructor(private serviceService: ServiceService, private dialog: MatDialog) {}
@@ -26,13 +28,14 @@ export class ServiceComponent {
   ngOnInit(): void {
     this.dtOptions = {
       pagingType: 'full_numbers',
-      pageLength: 10,
+      pageLength: 5,
       processing: true
       // Add more options as needed
     };
     this.serviceService.getAll().subscribe(
       (response: any) => {
         this.serv = response.response.data;
+        this.dtTrigger.next(null);
         console.log("services: ", this.serv);
         
       },
@@ -110,5 +113,9 @@ export class ServiceComponent {
         console.error('Erreur lors de la suppression du service :', error);
       }
     );
+  }
+
+  ngOnDestroy(): void {
+    this.dtTrigger.unsubscribe();
   }
 }

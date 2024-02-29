@@ -12,6 +12,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog'; 
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
+import { GlobalConstants } from 'src/app/services/global-constants';
 
 @Component({
   selector: 'app-add-emp-service',
@@ -53,7 +54,7 @@ export class AddEmpServiceComponent implements OnInit {
         console.error('Erreur lors de la récupération des services :', error);
       }
     );
-    this.userService.getAll().subscribe(
+    this.userService.findByRole(GlobalConstants.emloyeeRole).subscribe(
       (response: any) => {
         this.ListEmp = response.response.data;
         console.log("listEmpppppppppppppppppp: ", this.ListEmp);

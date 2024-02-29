@@ -6,19 +6,30 @@ import { User } from 'src/app/models/User';
 import { Employee } from '../../../../models/Employee';
 import { MatDialog } from '@angular/material/dialog';
 import { AddEmployeeComponent } from '../../modals/employee/add-employee.component';
+import { Subject } from 'rxjs';
+import { DataTablesModule } from 'angular-datatables';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-employee',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, DataTablesModule, MatIconModule],
   templateUrl: './employee.component.html',
   styleUrl: './employee.component.scss'
 })
 export class EmployeeComponent implements OnInit{
   ListEmp: Employee[] = [];
+  dtOptions: DataTables.Settings = {};
+  dtTrigger: Subject<any> = new Subject<any>();
   
   constructor( private userService: UserService, private dialog: MatDialog) { }
   ngOnInit(): void {
+    this.dtOptions = {
+      pagingType: 'full_numbers',
+      pageLength: 5,
+      processing: true
+      // Add more options as needed
+    };
     this.fetchEmployees(); // Appel de la méthode pour récupérer les employés
   }
   
@@ -26,6 +37,7 @@ export class EmployeeComponent implements OnInit{
     this.userService.findByRole(GlobalConstants.emloyeeRole).subscribe(
       (response: any) => {
         this.ListEmp = response.response.data;
+        this.dtTrigger.next(null);
         console.log("listEmployee: ", this.ListEmp);
       },
       (error) => {

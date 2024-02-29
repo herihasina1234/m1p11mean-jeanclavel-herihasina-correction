@@ -1,4 +1,5 @@
 const appointment_controller = require('../controllers/appointment_controller');
+const authentication = require('../middleware/authentication');
 
 module.exports = (app) => {
     app.post('/appointment', appointment_controller.registre_appointment)

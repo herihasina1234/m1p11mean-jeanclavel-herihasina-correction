@@ -74,6 +74,23 @@ module.exports.find = async(req, res) => {
 
 }
 
+module.exports.findById = async(req, res) => {
+
+    const { id } = req.params.id;
+    await User.findById(req.params.id).populate('role')
+        .then(users => {
+            const response = {
+                message: "user obtained successfully",
+                data: users
+            }
+            res.status(201).json({ response: response });
+        })
+        .catch(error => {
+            return res.status(400).json({ message: error.message, data: error })
+        })
+
+}
+
 module.exports.findByRole = async(req, res) => {
     const { id } = req.params;
     try {
@@ -88,14 +105,14 @@ module.exports.findByRole = async(req, res) => {
     }
 };
 
-module.exports.sendMail = async(req, res) => {
-    // try {
-    await sendMail('ainafitiavana0120@gmail.com', 'Bienvenue!', 'Votre compte a été créé avec succès.');
-    const response = {
-        message: "envoie mail success",
-    };
-    res.status(201).json(response);
-    // } catch (error) {
-    //     res.status(500).json({ message: 'Erreur lors de l\'envoi de l\'e-mail.', error });
-    // }
-};
+// module.exports.sendMail = async(req, res) => {
+//     // try {
+//     await sendMail('jeanclavelrandrya@gmail.com', 'Bienvenue!', 'Votre compte a été créé avec succès.');
+//     const response = {
+//         message: "envoie mail success",
+//     };
+//     res.status(201).json(response);
+//     // } catch (error) {
+//     //     res.status(500).json({ message: 'Erreur lors de l\'envoi de l\'e-mail.', error });
+//     // }
+// };

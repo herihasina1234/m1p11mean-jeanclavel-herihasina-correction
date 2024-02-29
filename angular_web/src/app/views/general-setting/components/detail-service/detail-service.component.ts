@@ -8,11 +8,13 @@ import { UserService } from 'src/app/services/api/user_service/user.service';
 import { ServiceService } from 'src/app/services/api/service_service/service.service';
 import { AddEmpServiceComponent } from '../../modals/emp-service/add-emp-service/add-emp-service.component';
 import { User } from 'src/app/models/User';
+import { Subject } from 'rxjs';
+import { DataTablesModule } from 'angular-datatables';
 
 @Component({
   selector: 'app-detail-service',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, DataTablesModule],
   templateUrl: './detail-service.component.html',
   styleUrls: ['./detail-service.component.scss']
 })
@@ -23,6 +25,9 @@ export class DetailServiceComponent implements OnInit {
   listServ: Service[] = [];
   listEmp: User[] = [];
 
+  dtOptions: DataTables.Settings = {};
+  dtTrigger: Subject<any> = new Subject<any>();
+
   constructor(private route: ActivatedRoute,
     private service:ServiceService,
     private emplServ: EmployeeServiceService,
@@ -30,6 +35,12 @@ export class DetailServiceComponent implements OnInit {
 
   ngOnInit(): void {
     this.serviceId = this.route.snapshot.paramMap.get('id');
+    this.dtOptions = {
+      pagingType: 'full_numbers',
+      pageLength: 5,
+      processing: true
+      // Add more options as needed
+    };
     if (this.serviceId !== null) { // Vérification si serviceId est différent de null
       this.emplServ.findByService(this.serviceId).subscribe(
         (response: any) => {

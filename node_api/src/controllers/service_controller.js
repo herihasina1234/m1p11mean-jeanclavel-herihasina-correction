@@ -50,6 +50,21 @@ module.exports.get_service_by_id = async(req, res) => {
     }
 }
 
+module.exports.update_service = async(req, res) => {
+    const { id } = req.params;
+    const { designation, duration, price, commission } = req.body;
+
+    try {
+        const service = await Service.findByIdAndUpdate(id, { designation, duration, price, commission }, { new: true });
+        if (!service) {
+            return res.status(404).json({ error: "Service not found" });
+        }
+        res.status(200).json({ message: "Service updated successfully", data: service });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+}
+
 module.exports.delete_service = async(req, res) => {
     const { id } = req.params;
 
