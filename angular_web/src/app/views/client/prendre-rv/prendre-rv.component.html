@@ -43,8 +43,8 @@
             >
               <tr *ngFor="let appointment of appointments; let i = index" cdkDrag>
                 <td>{{ appointment.service?.designation }}</td>
-                <td>{{ appointment.service?.duree }}</td>
-                <td>{{ appointment.service?.prix }}</td>
+                <td>{{ appointment.service?.duration }}</td>
+                <td>{{ appointment.service?.price }}</td>
                 <td>
                   <select #selectElem (change)="onSelect(selectElem.selectedIndex, i)" cSelect>
                     <option value="" disabled selected>Choisir un employee</option>

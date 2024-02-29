@@ -13,31 +13,91 @@
                 </span>
                 <input autoComplete="name" placeholder="Entrer votre nom" required="required"
                 aria-required="true" [(ngModel)]="user.name" [ngModelOptions]="{standalone: true}"  value="nom" cFormControl/>
+                <c-alert 
+                  [(visible)]="boolname"
+                  [dismissible]="true"
+                  color="danger"
+                  fade
+                  class="errorDisplay">
+                  Veuillez entrer votre nom
+                </c-alert>               
               </c-input-group>
               <c-input-group class="mb-3">
                 <span cInputGroupText>
                   <svg cIcon name="cilUser"></svg>
                 </span>
                 <input autoComplete="firstname" placeholder="Entrer votre prenom" required="required" aria-required="true" [(ngModel)]="user.firstname" [ngModelOptions]="{standalone: true}" value="prenom" cFormControl/>
+                <c-alert 
+                  [(visible)]="boolfirstname"
+                  [dismissible]="true"
+                  color="danger"
+                  fade
+                  class="errorDisplay">
+                  Veuillez entrer votre prenom
+                </c-alert> 
               </c-input-group>
               <c-input-group class="mb-3">
                 <span cInputGroupText>&#64;</span>
                 <input autoComplete="email" placeholder="Email" required="required" aria-required="true" [(ngModel)]="user.email" [ngModelOptions]="{standalone: true}" value="mail@abc.com" cFormControl/>
+                <c-alert 
+                  [(visible)]="boolemail"
+                  [dismissible]="true"
+                  color="danger"
+                  fade
+                  class="errorDisplay">
+                  Veuillez entrer votre mail
+                </c-alert> 
               </c-input-group>
               <c-input-group class="mb-3">
                 <span cInputGroupText>
                   <svg cIcon name="cilLockLocked"></svg>
                 </span>
-                <input autoComplete="new-password" placeholder="Password" type="password" required="required" aria-required="true" [(ngModel)]="pass1" [ngModelOptions]="{standalone: true}" value="qwertyuiop" cFormControl/>
+                <input autoComplete="new-password" placeholder="Password" type="password" required="required" aria-required="true" [(ngModel)]="pass1" [ngModelOptions]="{standalone: true}" cFormControl/>
+                <c-alert 
+                  [(visible)]="boolpass1"
+                  [dismissible]="true"
+                  color="danger"
+                  fade
+                  class="errorDisplay">
+                  Veuillez entrer un mot de passe
+                </c-alert> 
               </c-input-group>
               <c-input-group class="mb-4">
                 <span cInputGroupText>
                   <svg cIcon name="cilLockLocked"></svg>
                 </span>
-                <input autoComplete="new-password" placeholder="Repeat password" type="password" required="required" aria-required="true" [(ngModel)]="pass2" [ngModelOptions]="{standalone: true}" value="qwertyuiop" cFormControl/>
+                <input autoComplete="new-password" placeholder="Repeat password" type="password" required="required" aria-required="true" [(ngModel)]="pass2" [ngModelOptions]="{standalone: true}" cFormControl/>
+                <c-alert 
+                  [(visible)]="boolpass2"
+                  [dismissible]="true"
+                  color="danger"
+                  fade
+                  class="errorDisplay">
+                  Veuillez confirmer votre mot de passe
+                </c-alert> 
+                <c-alert 
+                  [(visible)]="boolpass"
+                  [dismissible]="true"
+                  color="danger"
+                  fade
+                  class="errorDisplay">
+                  <strong>Erreur:</strong> mot de passe different.
+                </c-alert> 
               </c-input-group>
               <div class="d-grid">
-                <button cButton color="success" (click)="signup()">S'inscrire</button>
+                <button cButton color="success" (click)="signup()" *ngIf="!loading">S'inscrire</button>
+                <button cButton color="secondary" *ngIf="loading">
+                  <c-spinner aria-hidden="true" size="sm" variant="grow"></c-spinner>                      
+                  Loading...
+                </button>
+                <c-alert 
+                  [(visible)]="boolpass"
+                  [dismissible]="true"
+                  color="danger"
+                  fade
+                  class="errorDisplay">
+                  <strong>Erreur:</strong> {{ errorMessage }}
+                </c-alert> 
               </div>
             </form>
           </c-card-body>

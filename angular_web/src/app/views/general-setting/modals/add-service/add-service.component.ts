@@ -87,9 +87,11 @@ async setFormData(serviceId: string): Promise<void> {
         const serviceData: Service = {
             _id : '',
             designation: formData.designation,
+            description: "lorem ipsum",
             price: formData.price,
             duration: formData.duration,
-            commission: formData.commission
+            commission: formData.commission,
+            img: formData.designation
         };
 
         if (this.isUpdate) {

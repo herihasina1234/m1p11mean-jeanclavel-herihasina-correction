@@ -17,7 +17,7 @@ export class AuthenticationInterceptorService {
           Authorization: "Bearer " + token
         }
       });
-      console.log(token);
+      
     }
     return next.handle(req);
   }

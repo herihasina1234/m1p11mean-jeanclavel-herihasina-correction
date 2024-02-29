@@ -11,6 +11,7 @@ import { IconModule, IconSetService } from '@coreui/icons-angular';
 import { CdkDrag, CdkDropList, CdkDropListGroup } from '@angular/cdk/drag-drop';
 import { UtilityModule } from 'src/app/views/utility/utility.module';
 
+
 @NgModule({
   declarations: [
     ServicesListComponent,

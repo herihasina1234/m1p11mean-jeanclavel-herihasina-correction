@@ -1,14 +1,18 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { DefaultLayoutComponent } from './containers';
+import { DefaultLayoutComponent, ClientLayoutComponent, EmployeeLayoutComponent } from './containers';
 import { Page404Component } from './views/pages/page404/page404.component';
 import { Page500Component } from './views/pages/page500/page500.component';
 import { LoginComponent } from './views/pages/login/login.component';
 import { RegisterComponent } from './views/pages/register/register.component';
-import { authorizationGuard } from './guard/authorization.guard';
 
 const routes: Routes = [  
+  {
+    path: '',
+    redirectTo: 'dashboard',
+    pathMatch: 'full'
+  },  
   {
     path: '',
     component: DefaultLayoutComponent,
@@ -65,7 +69,7 @@ const routes: Routes = [
         path: 'pages',
         loadChildren: () =>
           import('./views/pages/pages.module').then((m) => m.PagesModule)
-      },
+      }
     ]
   },
   {
@@ -82,7 +86,7 @@ const routes: Routes = [
       }
     ]
   },
-
+  
   {
     path: 'statistic',
     component: DefaultLayoutComponent,
@@ -97,7 +101,35 @@ const routes: Routes = [
       }
     ]
   },
-
+  
+  {
+    path: '',
+    component: ClientLayoutComponent,
+    data: {
+      title: 'Clients'
+    },
+    children: [
+      {        
+        path: 'clients',
+        loadChildren: () =>
+        import('./views/client/client.module').then((m) => m.ClientModule)
+      }
+    ]
+  },
+  {
+    path: '',
+    component: EmployeeLayoutComponent,
+    data: {
+      title: 'Employees'
+    },
+    children: [
+      {        
+        path: 'employees',
+        loadChildren: () =>
+        import('./views/employee/employee.module').then((m) => m.EmployeeModule)
+      }
+    ]
+  },
   {
     path: '404',
     component: Page404Component,
@@ -108,7 +140,6 @@ const routes: Routes = [
   {
     path: '500',
     component: Page500Component,
-    canActivate: [authorizationGuard],
     data: {
       title: 'Page 500'
     }
@@ -127,8 +158,7 @@ const routes: Routes = [
       title: 'Register Page'
     }
   },
-  //{path: '**', redirectTo: 'dashboard'}  
-  {path: 'dashboard', redirectTo: 'dashboard'}  
+  {path: '**', redirectTo: 'login'}    
 ];
 
 @NgModule({

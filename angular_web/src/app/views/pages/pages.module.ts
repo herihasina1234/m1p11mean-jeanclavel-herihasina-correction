@@ -6,11 +6,10 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { Page404Component } from './page404/page404.component';
 import { Page500Component } from './page500/page500.component';
-import { ButtonModule, CardModule, FormModule, GridModule } from '@coreui/angular';
+import { ButtonModule, CardModule, FormModule, GridModule, SpinnerModule, AlertModule } from '@coreui/angular';
 import { IconModule } from '@coreui/icons-angular';
 import { FormsModule } from '@angular/forms';
-
-
+ 
 @NgModule({
   declarations: [
     LoginComponent,
@@ -29,7 +28,9 @@ import { FormsModule } from '@angular/forms';
     
     //custom (make sure your component are declared above)
     
-    FormsModule
+    FormsModule,
+    SpinnerModule,
+    AlertModule
   ]
 })
 export class PagesModule {

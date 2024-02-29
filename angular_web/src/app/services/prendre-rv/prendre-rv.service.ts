@@ -64,12 +64,12 @@ export class PrendreRvService {
     currentValue[index].endDate = this.dateService.strToDate(dateTime);    
     
     if(currentValue){
-      const duree = currentValue[index]?.service?.duree
+      const duration = currentValue[index]?.service?.duration
       const minute = currentValue[index]?.endDate 
 
-      if(duree && minute){
+      if(duration && minute){
         currentValue[index].endDate?.setMinutes(
-          duree + minute.getMinutes()
+          duration + minute.getMinutes()
         )     
       }
 
@@ -104,9 +104,9 @@ export class PrendreRvService {
     const currentProducts = this.cartAppointmentSubject.getValue();
     let total = 0;
     for (let index = 0; index < currentProducts.length; index++) {      
-      let duree = currentProducts[index].service?.duree;
-      if(duree)
-        total = total + duree
+      let duration = currentProducts[index].service?.duration;
+      if(duration)
+        total = total + duration
       
     }            
         
@@ -118,9 +118,9 @@ export class PrendreRvService {
     const currentProducts = this.cartAppointmentSubject.getValue();
     let total = 0;
     for (let index = 0; index < currentProducts.length; index++) {      
-      let prix = currentProducts[index].service?.prix;
-      if(prix)
-        total = total + prix
+      let price = currentProducts[index].service?.price;
+      if(price)
+        total = total + price
       
     }            
         

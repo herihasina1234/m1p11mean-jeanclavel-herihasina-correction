@@ -13,7 +13,14 @@
                 <input autoComplete="email" cFormControl placeholder="Email..." required="required"
                   aria-required="true" class="form-control" [(ngModel)]="user.email" [ngModelOptions]="{standalone: true}"
                   />                
-                  <div *ngIf="boolemail" class="alert alert-danger">Veuillez entrer votre mail</div>                  
+                  <c-alert 
+                  [(visible)]="boolemail"
+                  [dismissible]="true"
+                  color="danger"
+                  fade
+                  class="errorDisplay">
+                  Veuillez entrer votre mail
+                </c-alert>                   
                 </c-input-group>
                 <c-input-group class="mb-4">
                   <span cInputGroupText>
@@ -25,13 +32,34 @@
                     placeholder="mot de passe..."
                     type="password" required="required"
                     aria-required="true" class="form-control" [(ngModel)]="user.password" [ngModelOptions]="{standalone: true}"
-                  />                  
+                  /> 
+                  <c-alert 
+                  [(visible)]="boolpass"
+                  [dismissible]="true"
+                  color="danger"
+                  fade
+                  class="errorDisplay">
+                  Veuillez entrer votre mot de passe
+                </c-alert>                                    
                 </c-input-group>
-                <c-row >                  
-                    <button cButton class="px-4" color="primary" (click)="authenticate()">
+                <c-row >                    
+                    <button cButton class="px-4" color="secondary" *ngIf="loading" disabled>
+                      <c-spinner aria-hidden="true" size="sm" variant="grow"></c-spinner>
+                      Loading...
+                    </button>                  
+                    <button cButton class="px-4" color="primary" (click)="authenticate()" *ngIf="!loading">
                       S'identifier
                     </button>                  
                 </c-row>
+                <c-alert 
+                  [(visible)]="alertVisibility"
+                  [dismissible]="true"
+                  color="danger"
+                  fade
+                  *ngIf="alertVisibility"
+                  class="errorDisplay">
+                  {{ errorMessage }}
+                </c-alert>                
               </form>
             </c-card-body>
           </c-card>

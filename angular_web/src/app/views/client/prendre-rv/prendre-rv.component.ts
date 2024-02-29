@@ -18,8 +18,8 @@ export class PrendreRvComponent implements OnInit{
   cartAppointments$: Observable<Appointment[]> = this.prendreRvService.cartAppointments$;
   durationTotal$: Observable<number> = this.prendreRvService.durationTotal$;
   priceTotal$: Observable<number> = this.prendreRvService.priceTotal$;
-  prixTotal: number = 0;
-  dureeTotal: number = 0;
+  priceTotal: number = 0;
+  durationTotal: number = 0;
   dateDebut: Date = new Date();
   dateFin: Date = new Date();
   dateDebutStr: string = '';

@@ -75,8 +75,8 @@
                         <tbody>
                             <tr *ngFor="let appointment of appointments; let i = index" >
                                 <td>{{ appointment.service?.designation }}</td>
-                                <td>{{ appointment.service?.duree }}</td>
-                                <td>{{ appointment.service?.prix }}</td>
+                                <td>{{ appointment.service?.duration }}</td>
+                                <td>{{ appointment.service?.price }}</td>
                                 <td>{{ appointment.employee?.name }} {{ appointment.employee?.firstname }}</td>
                                 <td>{{ appointment.startDate | date:'dd/MM/yyyy HH:mm:ss' }}</td>
                                 <td>{{ appointment.endDate | date:'dd/MM/yyyy HH:mm:ss' }}</td>      
@@ -93,11 +93,11 @@
                                     <c-modal-body>                                                                   
                                         <ul cListGroup>
                                             <li cListGroupItem><strong>Designation: </strong>{{ appointment.service?.designation }}</li>
-                                            <li cListGroupItem><strong>Duree: </strong>{{ appointment.service?.duree }} mn</li>
+                                            <li cListGroupItem><strong>Duree: </strong>{{ appointment.service?.duration }} mn</li>
                                             <li cListGroupItem><strong>Debut: </strong>{{ appointment.startDate | date:'dd/MM/yyyy HH:mm:ss' }}</li>
                                             <li cListGroupItem><strong>Fin: </strong>{{ appointment.endDate | date:'dd/MM/yyyy HH:mm:ss' }}</li>
                                             <li cListGroupItem><strong>Employe: </strong>{{ appointment.employee?.name }} {{ appointment.employee?.firstname }}</li>                  
-                                            <li cListGroupItem><strong>Prix: </strong>{{ appointment.service?.prix }} Ar</li>                  
+                                            <li cListGroupItem><strong>Prix: </strong>{{ appointment.service?.price }} Ar</li>                  
                                         </ul>                                                                    
                                     </c-modal-body>
                                     <c-modal-footer>

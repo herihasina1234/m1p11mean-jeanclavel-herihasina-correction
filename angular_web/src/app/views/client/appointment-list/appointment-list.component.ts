@@ -109,7 +109,7 @@ export class AppointmentListComponent implements OnInit {
   payer(appt: any){
     this.loading = true;
     const appointment = appt._id
-    const amount = appt.service?.prix
+    const amount = appt.service?.price
     
     this.paymentService.create({ appointment, amount })
       .subscribe({

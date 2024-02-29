@@ -3,7 +3,6 @@ import { HashLocationStrategy, LocationStrategy, PathLocationStrategy } from '@a
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatDialogModule } from '@angular/material/dialog';
 
 import { NgScrollbarModule } from 'ngx-scrollbar';
 
@@ -15,8 +14,12 @@ import { AppComponent } from './app.component';
 
 // Import containers
 import { DefaultFooterComponent, DefaultHeaderComponent, DefaultLayoutComponent } from './containers';
-import { DataTablesModule } from "angular-datatables";
 
+// Import client containers
+import { ClientFooterComponent, ClientHeaderComponent, ClientLayoutComponent } from './containers';
+
+// Import employee containers
+import { EmployeeFooterComponent, EmployeeHeaderComponent, EmployeeLayoutComponent } from './containers';
 
 import {
   AvatarModule,
@@ -40,9 +43,13 @@ import {
 } from '@coreui/angular';
 
 import { IconModule, IconSetService } from '@coreui/icons-angular';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { AddServiceComponent } from './views/general-setting/modals/add-service/add-service.component';
+import { HttpClientModule } from '@angular/common/http';
+
+import { AuthenticationInterceptorService } from 'src/app/services/authentication_interceptor/authentication-interceptor.service';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { GeneralSettingModule } from './views/general-setting/general-setting.module';
+import { MatDialogModule } from '@angular/material/dialog';
+import { DataTablesModule } from 'angular-datatables';
 
 const APP_CONTAINERS = [
   DefaultFooterComponent,
@@ -50,13 +57,30 @@ const APP_CONTAINERS = [
   DefaultLayoutComponent
 ];
 
+const CLIENT_CONTAINERS = [
+  ClientFooterComponent,
+  ClientHeaderComponent,
+  ClientLayoutComponent
+];
+
+const EMPLOYEE_CONTAINERS = [
+  EmployeeFooterComponent,
+  EmployeeHeaderComponent,
+  EmployeeLayoutComponent
+];
+
 @NgModule({
-  declarations: [AppComponent, ...APP_CONTAINERS],
+  declarations: [
+    AppComponent, 
+    ...APP_CONTAINERS,
+    ...CLIENT_CONTAINERS,
+    EMPLOYEE_CONTAINERS
+  ],
   imports: [
-    GeneralSettingModule,
+    GeneralSettingModule,    
     BrowserModule,
     MatDialogModule,
-    DataTablesModule,
+    DataTablesModule,    
     BrowserAnimationsModule,
     AppRoutingModule,
     AvatarModule,
@@ -91,6 +115,10 @@ const APP_CONTAINERS = [
     {
       provide: LocationStrategy,
       useClass: HashLocationStrategy
+    },    
+    { 
+      provide: HTTP_INTERCEPTORS, 
+      useClass: AuthenticationInterceptorService, multi: true 
     },
     IconSetService,
     Title

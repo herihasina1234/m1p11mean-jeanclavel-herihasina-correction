@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { UserService } from 'src/app/services/api/user_service/user.service';
 import { GlobalConstants } from 'src/app/services/global-constants';
 import { User } from 'src/app/models/User';
-import { Employee } from '../../../../models/Employee';
+import { Employee } from 'src/app/models/Employee';
 import { MatDialog } from '@angular/material/dialog';
 import { AddEmployeeComponent } from '../../modals/employee/add-employee.component';
 import { Subject } from 'rxjs';

@@ -11,8 +11,7 @@ export const authorizationGuard: CanActivateFn = () => {
   if (localStorageService.get('token')) {
     jwtService.setToken(localStorageService.get('token')!);
     jwtService.decodeToken();
-    console.log(jwtService);
-
+    
     if (jwtService.isTokenExpired()) {
       router.navigateByUrl('/login');
       return false;

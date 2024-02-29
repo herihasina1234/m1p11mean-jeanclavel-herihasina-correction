@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { User } from "src/app/models/User";
@@ -11,24 +11,10 @@ export class UserService {
   constructor(private http: HttpClient) { }
 
   getAll(): Observable<User[]> {
-    const token = localStorage.getItem('token');
-    if (token) {
-      const httpOptions = {
-        headers: new HttpHeaders({
-          'Authorization': 'Bearer ' + token
-        })
-      };
-      return this.http.get<User[]>(this.baseUrl, httpOptions);
-    } else {
-      return this.http.get<User[]>(this.baseUrl);
-    }
+    return this.http.get<User[]>(this.baseUrl);
   }
 
   get(id: any): Observable<any> {
-    return this.http.get(`${this.baseUrl}/${id}`);
-  }
-
-  getById(id: any): Observable<any> {
     return this.http.get(`${this.baseUrl}/${id}`);
   }
 
@@ -48,21 +34,7 @@ export class UserService {
     return this.http.delete(this.baseUrl);
   }
 
-  findByTitle(title: any): Observable<User[]> {
-    return this.http.get<User[]>(`${this.baseUrl}?title=${title}`);
-  }
-
   findByRole(role: any): Observable<User[]> {
-    const token = localStorage.getItem('token');
-    if (token) {
-      const httpOptions = {
-        headers: new HttpHeaders({
-          'Authorization': 'Bearer ' + token
-        })
-      };
-      return this.http.get<User[]>(`${this.baseUrl}/findByRole/${role}`, httpOptions);
-    } else {
-      return this.http.get<User[]>(this.baseUrl);
-    }
+    return this.http.get<User[]>(`${this.baseUrl}/role=${role}`);
   }
 }
