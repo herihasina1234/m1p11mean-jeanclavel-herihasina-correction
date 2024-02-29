@@ -28,6 +28,11 @@ const userSchema = new mongoose.Schema({
         type: Schema.Types.ObjectId,
         ref: 'Role',
     },
+    avatar: {
+        type: String,
+        required: [true, 'Please enter an avatar'],
+        minlength: [3, 'Minimum password length is 6 characters']
+    }
 });
 
 module.exports = mongoose.model('User', userSchema);

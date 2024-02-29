@@ -1,6 +1,4 @@
 const mongoose = require('mongoose');
-const User = require('./user');
-const Service = require('./service');
 const Schema = mongoose.Schema;
 
 const employeeServiceSchema = new mongoose.Schema({

@@ -5,6 +5,10 @@ const serviceSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please enter a designation'],
     },
+    description: {
+        type: String,
+        required: [true, 'Please enter a description'],
+    },
     duration: {
         type: Number,
         required: [true, 'Please enter a duration'],
@@ -16,6 +20,10 @@ const serviceSchema = new mongoose.Schema({
     commission: {
         type: Number,
         required: [true, 'Please enter a commission']
+    },
+    img: {
+        type: String,
+        required: [true, 'Please enter an image']
     }
 });
 

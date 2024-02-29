@@ -1,4 +1,4 @@
-const Service = require("../models/service");
+const Service = require('../models/service')
 
 module.exports.registre_service = async(req, res) => {
     const { designation, duration, price, commission } = req.body;
@@ -50,21 +50,6 @@ module.exports.get_service_by_id = async(req, res) => {
     }
 }
 
-module.exports.update_service = async(req, res) => {
-    const { id } = req.params;
-    const { designation, duration, price, commission } = req.body;
-
-    try {
-        const service = await Service.findByIdAndUpdate(id, { designation, duration, price, commission }, { new: true });
-        if (!service) {
-            return res.status(404).json({ error: "Service not found" });
-        }
-        res.status(200).json({ message: "Service updated successfully", data: service });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-}
-
 module.exports.delete_service = async(req, res) => {
     const { id } = req.params;
 
@@ -80,4 +65,78 @@ module.exports.delete_service = async(req, res) => {
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
+}
+
+module.exports.find = async (req, res) => {        
+    await Service.find()
+        .then ( services => {    
+            const response = {
+                message: "service list obtained successfully",
+                data: services                 
+            }            
+            res.status(201).json({ response: response });
+        })
+        .catch( error => {
+            res.status(400).json({message: error.message, data: error})
+        })            
+            
+}
+
+
+module.exports.findById = async (req, res) => {        
+    await Service.findById(req.params.id)
+        .then ( services => {    
+            const response = {
+                message: "service obtained successfully",
+                data: services                 
+            }            
+            res.status(201).json({ response: response });
+        })
+        .catch( error => {
+            res.status(400).json({message: error.message, data: error})
+        })            
+            
+}
+
+
+module.exports.search = async (req, res) => {      
+    const page = parseInt(req.query.page) || 1;
+    const pageSize = parseInt(req.query.pageSize) || 10;
+    const startIndex = (page - 1) * pageSize; //0
+
+    let filter = Object.assign({}, req.query);
+    delete filter.page;
+    delete filter.pageSize;
+
+    await Service.find(filter)
+        .then ( services => {  
+            let result = services
+            
+            const endIndex = Math.min(startIndex + pageSize - 1, result.length - 1);
+            const paginatedResult = result.slice(startIndex, endIndex + 1);
+            const totalPages = Math.ceil(result.length / pageSize);
+            
+            const queryParams = Object.keys(req.query).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(req.query[key])).join(', ');            
+            message= `services list with params ${queryParams} obtained successfully`;
+        
+                        
+            res.status(201).json({ message: message, data: paginatedResult, totalPages: totalPages });
+        })
+        .catch( error => {
+            res.status(400).json({message: error.message, data: error})
+        })            
+            
+}
+
+module.exports.save = async (req, res) => {
+    let { designation, description, duration, price, commission, img } = req.body;
+
+    await Service.create({ designation, description, duration, price, commission, img })
+        .then ( service => {                   
+            const message = "service added successfully"                 
+            res.status(201).json({message: message, data: service});
+        })
+        .catch( error => {
+            res.status(400).json({message: error.message, data: error})
+        })                        
 }

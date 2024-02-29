@@ -39,14 +39,14 @@ exports.sendMail = (to, subject, content) => {
         const transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
-                user: 'clavs8080@gmail.com',
-                pass: 'clavslovemusic!!'
+                user: 'test@gmail.com',
+                pass: 'clavs!!'
             }
         });
 
         // Définition des options de l'e-mail
         const mailOptions = {
-            from: 'clavs8080@gmail.com',
+            from: 'jeanclavelrandrya@gmail.com',
             to: to,
             subject: subject,
             text: content

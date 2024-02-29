@@ -1,5 +1,4 @@
 const Role = require("../models/Role");
-const Service = require("../models/service");
 
 module.exports.registre_role = async(req, res) => {
     const { designation, code } = req.body;
@@ -32,6 +31,20 @@ module.exports.role_list = async(req, res) => {
     }
 
 }
+
+
+module.exports.find_by_designation = async(req, res) => {    
+    const designation = req.params
+    await Role.findOne(designation)    
+    .then ( role => {  
+        const message = `role obtained successfully`                 
+        res.status(201).json({ message: message, data: role });
+    })
+    .catch( error => {
+        res.status(400).json({message: error.message, data: error})
+    })          
+}
+
 
 module.exports.delete_role = async(req, res) => {
     const { id } = req.params;

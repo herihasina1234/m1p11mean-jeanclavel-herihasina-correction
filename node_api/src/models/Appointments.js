@@ -13,7 +13,7 @@ const appointmentSchema = new Schema({
     },
     service: {
         type: Schema.Types.ObjectId,
-        ref: 'service',
+        ref: 'Service',
         required: [true, 'Please enter a service'],
     },
     startDate: {
@@ -25,7 +25,8 @@ const appointmentSchema = new Schema({
     createdAt: {
         type: Date,
     },
-    status: String
+    status: Boolean,
+    paymentStatus: Boolean
 });
 
 const Appointments = mongoose.model('Appointments', appointmentSchema);

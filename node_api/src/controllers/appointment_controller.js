@@ -1,9 +1,8 @@
 const Appointments = require("../models/Appointments");
-const GeneralService = require("../services/general_service");
-
+const mongoose = require('mongoose');
 
 module.exports.registre_appointment = async(req, res) => {
-    const { customer, employee, service, startDate, endDate, createdAt = new Date(), status = "new" } = req.body;
+    const { customer, employee, service, startDate, endDate, createdAt = new Date(), status = false } = req.body;
 
     try {
         const appointment = await Appointments.create({ customer, employee, service, startDate, endDate, createdAt, status });
@@ -19,6 +18,47 @@ module.exports.registre_appointment = async(req, res) => {
 }
 
 
+module.exports.save_many = async(req, res) => {
+    const appointments = req.body;
+    const createdAt = new Date();
+    const status = false;
+    const paymentStatus = false;
+    let listCreated = [];
+    const message = "request to add appointments completed"   
+    
+    const session = await mongoose.startSession();
+
+    try {
+      session.startTransaction();
+
+      appointments.forEach(async appointment => {         
+          const customer = appointment.customer._id
+          const employee = appointment.employee._id
+          const service = appointment.service._id 
+          const startDate = appointment.startDate
+          const endDate = appointment.endDate   
+          
+          await Appointments.create({ customer, employee, service, startDate, endDate, createdAt, status, paymentStatus })
+              .then ( app => {                   
+                  listCreated.push(app);
+              })                        
+      });
+    
+      await session.commitTransaction();
+    } catch (error) {
+        console.log(error);
+      await session.abortTransaction();
+
+      res.status(400).json({ error: err.message });
+    } finally {
+      session.endSession();
+    }
+    
+    
+    res.status(201).json({ message: message, data: listCreated });
+}
+
+
 module.exports.appointment_list = async(req, res) => {
 
     try {
@@ -27,7 +67,7 @@ module.exports.appointment_list = async(req, res) => {
             .populate('employee')
             .populate('service');
         const response = {
-            message: "List of available offer",
+            message: "List of available appointment",
             data: appointment
         }
         res.status(201).json({ response: response });
@@ -36,6 +76,178 @@ module.exports.appointment_list = async(req, res) => {
     }
 
 }
+
+module.exports.findByParams = async(req, res) => {    
+
+    const page = parseInt(req.query.page) || 1;
+    const pageSize = parseInt(req.query.pageSize) || 10;
+    const startIndex = (page - 1) * pageSize; //0
+
+    const customer_id = req.query.customer_id
+
+    let filter = Object.assign({}, req.query);
+    delete filter.page;
+    delete filter.pageSize;
+    delete filter.customer_id;
+    delete filter.keyword;
+
+    await Appointments.find(filter)
+    .populate('customer')
+    .populate('employee')
+    .populate('service')   
+    .sort({ startDate: 'desc' })            
+    .then ( appointments => {    
+        let result = []  
+        let id_filter_res = []
+        //filtre pour customer_id
+        if(customer_id){
+            appointments.forEach(appointment => {
+                if( appointment.customer._id.toString() === customer_id ) {
+                    
+                    id_filter_res.push(appointment)                
+                }
+            });
+        }
+        
+        
+        // Filtrer mot-cle
+        if(req.query.keyword) {
+        const regex = new RegExp(req.query.keyword, 'i'); // i: insensible à la casse
+        id_filter_res.forEach(appointment => {
+            if(
+                regex.test(appointment.service.designation) ||
+                regex.test(appointment.employee.name) ||
+                regex.test(appointment.employee.firstname) 
+                ) 
+                result.push(appointment)                
+            });
+        }
+        else{
+            result = id_filter_res;
+        }
+            
+        const endIndex = Math.min(startIndex + pageSize - 1, result.length - 1);
+        const paginatedResult = result.slice(startIndex, endIndex + 1);
+        const totalPages = Math.ceil(result.length / pageSize);
+        const queryParams = Object.keys(req.query).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(req.query[key])).join(', ');
+        
+        message= `appointments list with params ${queryParams} obtained successfully`;
+    
+                    
+        res.status(201).json({ message: message, data: paginatedResult, totalPages: totalPages });
+        })
+        .catch( error => {
+            res.status(400).json({message: error.message, data: error})
+        })  
+
+}
+
+
+module.exports.findByParamsEmployee = async(req, res) => {    
+
+    const page = parseInt(req.query.page) || 1;
+    const pageSize = parseInt(req.query.pageSize) || 10;
+    const startIndex = (page - 1) * pageSize; //0
+
+    const employee_id = req.query.employee_id;
+
+    let filter = Object.assign({}, req.query);
+    delete filter.page;
+    delete filter.pageSize;
+    delete filter.employee_id;
+    delete filter.keyword;
+
+    await Appointments.find(filter)
+    .populate('customer')
+    .populate('employee')
+    .populate('service')   
+    .sort({ startDate: 'desc' })            
+    .then ( appointments => {    
+        let result = [] 
+        let after_id = []
+        
+        //filtre pour employee_id        
+        appointments.forEach(appointment => {
+            if( appointment.employee._id.toString() === employee_id ) {
+                
+                after_id.push(appointment)                
+            }
+        });
+                
+        // Filtrer mot-cle
+        if(req.query.keyword) {
+            const regex = new RegExp(req.query.keyword, 'i'); // i: insensible à la casse            
+            after_id.forEach(appointment => {                
+            if(
+                regex.test(appointment.service.designation) ||
+                regex.test(appointment.customer.name) ||
+                regex.test(appointment.customer.firstname) 
+                ) 
+                result.push(appointment)                
+            });
+        }else{
+            result = after_id;
+        }
+        
+        const endIndex = Math.min(startIndex + pageSize - 1, result.length - 1);
+        const paginatedResult = result.slice(startIndex, endIndex + 1);
+        const totalPages = Math.ceil(result.length / pageSize);
+        const queryParams = Object.keys(req.query).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(req.query[key])).join(', ');
+        
+        message= `appointments list of employee with params ${queryParams} obtained successfully`;
+    
+                    
+        res.status(201).json({ message: message, data: paginatedResult, totalPages: totalPages });
+        })
+        .catch( error => {
+            res.status(400).json({message: error.message, data: error})
+        })  
+
+}
+
+
+module.exports.findCommission = async(req, res) => {        
+    const employee_id = req.query.employee_id;
+    const dateCommission = req.query.dateCommission;
+    
+    // let debut = new Date(`${dateCommission}:00z`);
+    // let fin = new Date(`${dateCommission}:00z`);
+    // debut.setHours(0, 0, 0, 0);
+    // fin.setHours(59, 59, 59, 59);
+    // console.log(debut, fin)
+
+    const filter = { startDate: { $gte: "2024-02-01T00:00", $lte: "2024-02-01T23:59" }};
+    
+    await Appointments.find(filter)
+    .populate('customer')
+    .populate('employee')
+    .populate('service')   
+    .sort({ startDate: 'desc' })            
+    .then ( appointments => {    
+        let result = []         
+        
+        //filtre pour employee_id        
+        appointments.forEach(appointment => {
+            if( appointment.employee._id.toString() === employee_id ) {
+                
+                result.push(appointment)                
+            }
+        });                        
+        
+        const queryParams = Object.keys(req.query).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(req.query[key])).join(', ');
+        
+        message= `commission list of employee with params ${queryParams} obtained successfully`;
+    
+                    
+        res.status(201).json({ message: message, data: result });
+        })
+        .catch( error => {
+            res.status(400).json({message: error.message, data: error})
+        })  
+    }
+
+
+
 
 module.exports.count_appointment_per_day = async(req, res) => {
 
@@ -131,157 +343,19 @@ async function calculateAverageTimeByEmployee() {
 }
 
 
+module.exports.update = async(req, res) => {
+    const { id } = req.params;
 
-module.exports.revenue_per_day = async(req, res) => {
-    try {
-        const result = await Appointments.aggregate([{
-                $lookup: {
-                    from: "services",
-                    localField: "service",
-                    foreignField: "_id",
-                    as: "serviceInfo"
-                }
-            },
-            {
-                $unwind: "$serviceInfo"
-            },
-            {
-                $group: {
-                    _id: { $dateToString: { format: "%Y-%m-%d", date: "$startDate" } },
-                    totalRevenue: { $sum: "$serviceInfo.price" } // Sum of service prices for the day
-                }
-            },
-            {
-                $project: {
-                    _id: 0,
-                    date: {
-                        $dateToString: {
-                            format: "%d-%b-%Y", // Format the date as 'd-Fév-Y'
-                            date: { $dateFromString: { dateString: "$_id", format: "%Y-%m-%d" } }
-                        }
-                    },
-                    totalRevenue: 1
-                }
-            },
-            {
-                $addFields: {
-                    monthFormatted: {
-                        $switch: {
-                            branches: [
-                                { case: { $eq: [{ $substr: ["$date", 3, 3] }, "Jan"] }, then: "Janv" },
-                                { case: { $eq: [{ $substr: ["$date", 3, 3] }, "Feb"] }, then: "Fév" },
-                                { case: { $eq: [{ $substr: ["$date", 3, 3] }, "Mar"] }, then: "Mar" },
-                                { case: { $eq: [{ $substr: ["$date", 3, 3] }, "Apr"] }, then: "Avr" },
-                                { case: { $eq: [{ $substr: ["$date", 3, 3] }, "May"] }, then: "Mai" },
-                                { case: { $eq: [{ $substr: ["$date", 3, 3] }, "Jun"] }, then: "Jun" },
-                                { case: { $eq: [{ $substr: ["$date", 3, 3] }, "Jul"] }, then: "Jul" },
-                                { case: { $eq: [{ $substr: ["$date", 3, 3] }, "Aug"] }, then: "Aoû" },
-                                { case: { $eq: [{ $substr: ["$date", 3, 3] }, "Sep"] }, then: "Sep" },
-                                { case: { $eq: [{ $substr: ["$date", 3, 3] }, "Oct"] }, then: "Oct" },
-                                { case: { $eq: [{ $substr: ["$date", 3, 3] }, "Nov"] }, then: "Nov" },
-                                { case: { $eq: [{ $substr: ["$date", 3, 3] }, "Dec"] }, then: "Déc" }
-                            ],
-                            default: "Unknown"
-                        }
-                    }
-                }
-            },
-            {
-                $project: {
-                    date: {
-                        $concat: [
-                            { $substr: ["$date", 0, 2] },
-                            "-",
-                            "$monthFormatted",
-                            "-",
-                            { $substr: ["$date", 7, 4] }
-                        ]
-                    },
-                    totalRevenue: 1
-                }
+    await Appointments.findByIdAndUpdate(id, req.body)
+        .then(appointment => {
+            if (!appointment) {                    
+                throw new Error(`no such appointment with id=${id}.`);                                    
             }
-        ]);
-
-        console.log(result);
-        res.status(200).json({ response: result });
-    } catch (err) {
-        res.status(400).json({ error: err.message });
-    }
+            appt = appointment;
+            const message = "appointment updated successfully"                 
+            res.status(201).json({ message: message, data: appt });
+        })    
 }
-
-
-
-
-
-module.exports.revenue_per_month = async(req, res) => {
-    try {
-        const result = await Appointments.aggregate([{
-                $lookup: {
-                    from: "services",
-                    localField: "service",
-                    foreignField: "_id",
-                    as: "serviceInfo"
-                }
-            },
-            {
-                $unwind: "$serviceInfo" // Décomprimer le tableau serviceInfo
-            },
-            {
-                $group: {
-                    _id: { year: { $year: "$startDate" }, month: { $month: "$startDate" } },
-                    totalRevenue: { $sum: "$serviceInfo.price" }
-                }
-            },
-            {
-                $project: {
-                    _id: 0,
-                    year: "$_id.year",
-                    month: "$_id.month",
-                    totalRevenue: 1
-                }
-            },
-            {
-                $addFields: {
-                    monthFormatted: {
-                        $switch: {
-                            branches: [
-                                { case: { $eq: ["$month", 1] }, then: "Jan" },
-                                { case: { $eq: ["$month", 2] }, then: "Fev" },
-                                { case: { $eq: ["$month", 3] }, then: "Mar" },
-                                { case: { $eq: ["$month", 4] }, then: "Avr" },
-                                { case: { $eq: ["$month", 5] }, then: "Mai" },
-                                { case: { $eq: ["$month", 6] }, then: "Jun" },
-                                { case: { $eq: ["$month", 7] }, then: "Jul" },
-                                { case: { $eq: ["$month", 8] }, then: "Aou" },
-                                { case: { $eq: ["$month", 9] }, then: "Sep" },
-                                { case: { $eq: ["$month", 10] }, then: "Oct" },
-                                { case: { $eq: ["$month", 11] }, then: "Nov" },
-                                { case: { $eq: ["$month", 12] }, then: "Dec" }
-                            ],
-                            default: "Unknown"
-                        }
-                    }
-                }
-            },
-            {
-                $project: {
-                    year: 1,
-                    month: "$monthFormatted",
-                    totalRevenue: 1
-                }
-            }
-        ]);
-
-        console.log(result);
-        res.status(200).json({ response: result });
-    } catch (err) {
-        res.status(400).json({ error: err.message });
-    }
-}
-
-
-
-
 
 
 module.exports.delete_appointment = async(req, res) => {
